@@ -1,0 +1,51 @@
+{
+    "employees": [
+      {
+        "id": 1,
+        "name": "John Smith",
+        "position": "Manager",
+        "salary": 5000,
+        "departments": ["Sales", "Marketing"],
+        "address": {
+          "street": "123 Main St",
+          "city": "New York",
+          "country": "United States"
+        },
+        "projects": [
+          {
+            "name": "Project A",
+            "status": "In Progress",
+            "start_date": "2023-01-01",
+            "end_date": "2023-06-30"
+          },
+          {
+            "name": "Project B",
+            "status": "Completed",
+            "start_date": "2022-07-01",
+            "end_date": "2022-12-31"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Jane Doe",
+        "position": "Developer",
+        "salary": 4000,
+        "departments": ["IT"],
+        "address": {
+          "street": "456 Elm St",
+          "city": "San Francisco",
+          "country": "United States"
+        },
+        "projects": [
+          {
+            "name": "Project C",
+            "status": "In Progress",
+            "start_date": "2023-02-15",
+            "end_date": "2023-07-31"
+          }
+        ]
+      }
+    ]
+  }
+  
