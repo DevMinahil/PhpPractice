@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Employee</title>
+<link href="index.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<body>
+    <div class="login-form">
+        <div class="main-div">
+          
+ 
+        <div class="panel">
+        
+           
+       
+        <form id="Login" action="CRUD.php" method="POST">
+            <div class="form-group">
+               
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <input type="password" name="Password" class="form-control" id="password" placeholder="*******">
+            </div>
+            <div class="form-group">
+                <input type="text" name="PhoneNumber" class="form-control" id="phoneNumber" placeholder="Phone Number">
+            </div>
+            
+            <input type="hidden" name="action" value="add">
+            <input type="submit" class="btn btn-primary" value="Add Employee">
+           
+           
+        </form>
+        </div>
+        </div>
+        </div>
+       
+        <p class="botto-text"> by Cairocoders</p>
+    </div>
+</div>
+</body>
+</html>
