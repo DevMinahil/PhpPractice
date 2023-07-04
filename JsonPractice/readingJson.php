@@ -1,42 +1,34 @@
-
 <?php
-$data= json_decode(file_get_contents('dummy.json'));
-// echo $drinks;
+$data = json_decode(file_get_contents('dummy.json'), true);
 
-// print_r($drinks);
-// foreach($drinks as $drink)
-// {
-// echo '<li>'.$drink->name."$".$drink."</li>";
-// }
-//$data = json_decode($data, true);
+$headings = [
+    "ID", "Name", "Position", "Salary", "Departments", "Address",
+    "Projects"
+];
 
-if ($data && isset($data->employees)) {
-    foreach ($data->employees as $employee) {
-        echo $employee->name . '<br>';
-        echo '<p><strong>Name:</strong> ' . $employee->name . '</p>';
-        echo '<p><strong>Salary:</strong> $' . $employee->salary . '</p>';
-        echo '<p><strong>Departments:</strong> ' . implode(', ', $employee->departments) . '</p>';
-        echo '<p><strong>Address:</strong> ' . $employee->address->street . ', ' . $employee->address->city . ', ' . $employee->address->country. '</p>';
-        echo '<h3>Projects:</h3>';
-                echo '<ul>';
-                foreach ($employee->projects as $project) {
-                    echo '<li>';
-                    echo '<strong>Name:</strong> ' . $project->name . '<br>';
-                    echo '<strong>Status:</strong> ' . $project->status . '<br>';
-                    echo '<strong>Start Date:</strong> ' . $project->start_date . '<br>';
-                    echo '<strong>End Date:</strong> ' . $project->end_date . '<br>';
-                    echo '</li>';
-                }
-                echo '</ul>';
-
-                       echo '</div>';
-      
+foreach ($data['employees'] as $employee) {
+    echo 'Employee Information:<br>';
+    foreach ($headings as $heading) {
+        if ($heading == "Departments") {
+            $departments = implode(", ", $employee[strtolower($heading)]);
+            echo $heading . ": " . $departments . "<br>";
+        } elseif ($heading == "Address") {
+            $address = $employee[strtolower($heading)];
+            $address_str = $address['street'] . ', ' . $address['city'] . ', ' . $address['country'];
+            echo $heading . ": " . $address_str . "<br>";
+        } elseif ($heading == "Projects") {
+            echo $heading . ":<br>";
+            foreach ($employee[strtolower($heading)] as $project) {
+                echo "  Project Name: " . $project['name'] . "<br>";
+                echo "  Status: " . $project['status'] . "<br>";
+                echo "  Start Date: " . $project['start_date'] . "<br>";
+                echo "  End Date: " . $project['end_date'] . "<br>";
+                echo "<br>";
+            }
+        } else {
+            echo $heading . ": " . $employee[strtolower($heading)] . "<br>";
+        }
     }
-} else {
-    echo 'Invalid JSON data';
+    echo "<br>";
 }
-
-
-
 ?>
-
