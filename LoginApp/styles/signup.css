@@ -1,0 +1,80 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 80px;
+    padding: 10px;
+}
+
+.form-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.login-form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    width: 100%;
+    background: #f0ad4e none repeat scroll 0 0;
+    border-color: #f0ad4e;
+    color: #ffffff;
+    font-size: 14px;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+}
+
+.login-form .btn.btn-primary.reset {
+    background: #ff9900 none repeat scroll 0 0;
+}
+
+.botto-text {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.panel h2 {
+    color: #444444;
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.invalid-feedback {
+    color: red;
+}
+
+.strong {
+    color: green;
+}
+
+.weak {
+    color: red;
+}
+
+.medium {
+    color: orange;
+}
+
+.password-weak {
+    border: 1px solid red;
+}
+
+.password-medium {
+    border: 1px solid orange;
+}
+
+.password-strong {
+    border: 1px solid green;
+}
