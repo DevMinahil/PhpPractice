@@ -99,8 +99,7 @@ document.getElementById("phone").addEventListener("blur", function (event) {
     }
 });
 
-var typingTimer;
-var doneTypingInterval = 500; // 500 milliseconds
+
 
 document.getElementById("inputPassword").addEventListener("keyup", function (event) {
     clearTimeout(typingTimer);

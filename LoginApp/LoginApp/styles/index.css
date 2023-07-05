@@ -64,7 +64,6 @@ body#LoginForm{ background-image:url("img/bgblur.jpg"); background-repeat:no-rep
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
-
-.customButton:hover{
-  background-color: transparent;
+.custom-class:hover{
+  background-color: #f0ad4e
 }

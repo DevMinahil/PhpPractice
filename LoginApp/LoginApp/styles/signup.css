@@ -33,10 +33,7 @@ body {
     line-height: 50px;
     padding: 0;
 }
-.btn-primary:hover {
-    background-color: #f0ad4e !important; /* Set the desired background color */
-    /* Add any other styles you want for the hover state */
-}
+
 .login-form .btn.btn-primary.reset {
     background: #ff9900 none repeat scroll 0 0;
 }
@@ -80,4 +77,9 @@ body {
 
 .password-strong {
     border: 1px solid green;
+}
+.btn 
+{
+    background-color: #f0ad4e !important;
+    color: white; 
 }
