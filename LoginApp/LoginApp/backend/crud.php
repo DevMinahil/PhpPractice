@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sql = "UPDATE users SET email = '$email', password = '$password', phone = '$phoneNumber', name = '$username' WHERE id = '$employeeId'";
             if (mysqli_query($conn, $sql)) {
                 // User updated successfully
-                header('Location: ../adminDashboard.html?updateSuccess=true');  // Redirect to adminDashboard with a query parameter indicating success
+                header('Location: ../adminDashboard.php?updateSuccess=true');  // Redirect to adminDashboard with a query parameter indicating success
                 exit;
             } else {
                 // Error occurred while updating user
-                header('Location: ../adminDashboard.html?updateSuccess=false');  // Redirect to adminDashboard with a query parameter indicating error
+                header('Location: ../adminDashboard.php?updateSuccess=false');  // Redirect to adminDashboard with a query parameter indicating error
              
             }
           

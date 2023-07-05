@@ -20,20 +20,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('location: ../index.html?loginError=1');
     } else {
         $row = mysqli_fetch_array($result);
-        
+       
+
+        // Store user ID in session
+     
 
         if (isset($_POST['remember'])) {
             // Set up cookie
-            setcookie("user", $row['user_name'], time() + (86400 * 30));
-            setcookie("pass", $row['user_password'], time() + (86400 * 30));
+            setcookie("user", $username, time() + (86400 * 30));
+            setcookie("pass", $password, time() + (86400 * 30));
         }
        
-        $_SESSION['id'] = $row['user_id'];
+        $_SESSION['id'] = $row['id'];
         if ($row['IsAdmin'] == 1) {
+            $_SESSION['IsAdmin'] = 1;
             echo $row;
-            header('location:../adminDashboard.html');
+            header('location:../adminDashboard.php');
         } else {
-            header('location: ../userDashboard.html');
+            header('location: ../userDashboard.php');
         }
     
 
