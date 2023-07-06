@@ -8,9 +8,9 @@
         function fetchEmployeeData(employeeId) {
             // Make an AJAX request to the CRUD PHP file
             $.ajax({
-                url: './backend/crud.php',
+                url: './backend/viewEmployee.php',
                 method: 'POST',
-                data: { action: 'ViewId',ID:employeeId },
+                data: {ID:employeeId },
                 success: function(response) {
                     // Update the table body with the received data
                   
@@ -20,9 +20,9 @@
                    console.log("Responce is displyed");
                    $('#username').val(response.name);
                    $("#EmployeeId").val(response.id)
-             $('#email').val(response.email);
-            $('#password').val(response.password);
-            $('#phoneNumber').val(response.phone);
+                   $('#email').val(response.email);
+                   $('#password').val(response.password);
+                   $('#phoneNumber').val(response.phone);
                 },
                 error: function() {
                     console.log('Error occurred while fetching employee data.');

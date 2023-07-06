@@ -9,6 +9,10 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/admin.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="errorsModals/updateSucess.js"></script>
 </head>
 <?php
 session_start();
@@ -16,10 +20,11 @@ session_start();
 // Check if the user ID session variable is set
 if (!isset($_SESSION['id'])) {
     // Redirect the user to the login page or display an error message
-    header('Location: ../index.html');
+    header('Location: ../index.php');
     exit(); // Stop further execution of the script
 }
 ?>
+
 <body>
 
     <!-- Optional JavaScript -->
@@ -55,6 +60,26 @@ if (!isset($_SESSION['id'])) {
                 <li class="nav-item active mr-5 ml-5">
                     <a class="nav-link" href="#">Contact Us<span class="sr-only">(current)</span></a>
                 </li>
+            </ul>
+            <!-- <ul class="navbar-nav ml-auto">
+            <li class="nav-item active mr-5 ml-5">
+                <a class="nav-link" href="./backend/logout.php">Logout<span class="sr-only">(current)</span></a>
+            </li> -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./backend/logout.php">Logout<span class="sr-only">(current)</span></a>
+
+                </li>
+                <ul>
+                    <div class="dropdown">
+                        <button class="dropbtn"><i class="fa fa-cog"></i></button>
+                        <div class="dropdown-content">
+                            <a href="changePassword.php">Change Password</a>
+
+                        </div>
+                    </div>
+
+                </ul>
             </ul>
         </div>
     </nav>
@@ -111,6 +136,25 @@ if (!isset($_SESSION['id'])) {
             </div>
         </div>
     </div>
+    <div class="modal fade" id="updateStatusModal" tabindex="-1" role="dialog" aria-labelledby="updateStatusModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateStatusModalLabel">Update Status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="updateStatusModalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container mt-5">
         <div class="row">
@@ -120,7 +164,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 1</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -130,7 +174,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 2</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -140,7 +184,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 3</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -152,7 +196,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 4</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -162,7 +206,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 5</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -172,7 +216,7 @@ if (!isset($_SESSION['id'])) {
                     <div class="card-body">
                         <h5 class="card-title">Card 6</h5>
                         <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#" class="btn btn-primary">Buy Now</a>
+                        <a href="#" class="btn btn-primary" style="background-color: #ffc107;">Buy Now</a>
                     </div>
                 </div>
             </div>

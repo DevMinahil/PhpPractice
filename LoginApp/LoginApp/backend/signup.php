@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "Email: " . $email . PHP_EOL;
     echo "As Admin: " . ($is_admin ? 1: 0) . PHP_EOL;
 
-  $query = "SELECT * FROM users WHERE email = '$email'";
+    $query = "SELECT * FROM users WHERE email = '$email'";
 }
 // // Execute the query and check if any rows are returned
 // // You'll need to use the appropriate method to execute the query depending on the database library you're using
@@ -31,7 +31,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     header('Location: ../signup.html?signUpError=1');
     exit();
  }
- $phoneQuery = "SELECT * FROM users WHERE phone = '$phone'";
+    $phoneQuery = "SELECT * FROM users WHERE phone = '$phone'";
     $phoneResult = mysqli_query($conn, $phoneQuery);
     if ($phoneResult && mysqli_num_rows($phoneResult) > 0) {
         // Phone number already exists, display an error message
@@ -56,7 +56,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         $successMessage = "Signup successful!";
 
         // Pass the success message to the main page via URL parameter
-        $url = "../index.html?successMessage=" . urlencode($successMessage);
+        $url = "../index.php?successMessage=" . urlencode($successMessage);
 
         // Redirect the user to the main page with the success message
         header("Location: " . $url);

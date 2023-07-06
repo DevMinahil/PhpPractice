@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    console.log("In update sucess");
+  
     const urlParams = new URLSearchParams(window.location.search);
     const updateSuccess = urlParams.get('updateSuccess');
-    console.log(updateSuccess);
+    
   
     if (updateSuccess === 'true') {
     

@@ -1,186 +1,160 @@
 $(document).ready(function() {
-  
-    
-
-
-function validateEmail(email) {
-    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return emailRegex.test(email);
-}
-
-function validatePhone(phone) {
-    var phoneRegex = /^\d{4}-\d{7}$/;
-    return phoneRegex.test(phone);
-}
-
-function validateName(name) {
-    var nameRegex = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/;
-    return nameRegex.test(name);
-}
-
-function validatePassword(password) {
-    var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-    return passwordRegex.test(password);
-}
-
-function updatePasswordStrength(password) {
-    var passwordStrengthElement = document.getElementById("passwordStrength");
-    var passwordInput = document.getElementById("inputPassword");
-    var passwordError = document.getElementById("passwordError");
-    if (!validatePassword(password)) {
-
-        passwordInput.classList.add("password-weak");
-        passwordInput.classList.remove("password-medium");
-        passwordInput.classList.remove("password-strong");
-
-
-        passwordStrengthElement.textContent = "Password Strength: Weak";
-        passwordStrengthElement.style.color = "red";
-
-
-
-    } else if (password.length >= 8 && password.length <= 12) {
-        passwordInput.classList.remove("password-weak");
-        passwordInput.classList.add("password-medium");
-        passwordInput.classList.remove("password-strong");
-        passwordStrengthElement.textContent = "Password Strength: Medium";
-        passwordStrengthElement.style.color = "orange";
-
-
-    } else if (password.length > 12) {
-        passwordInput.classList.remove("password-weak");
-        passwordInput.classList.remove("password-medium");
-        passwordInput.classList.add("password-strong");
-        passwordStrengthElement.textContent = "Password Strength: Strong";
-        passwordStrengthElement.style.color = "green"
-
-    }
-}
-
-document.getElementById("inputName").addEventListener("blur", function (event) {
-    const nameInput = event.target;
-    const nameError = document.getElementById("nameError");
-
-    if (!validateName(nameInput.value.trim())) {
-        nameError.textContent = "Invalid name";
-        nameError.style.display = "block";
-        nameInput.classList.add("is-invalid");
-    } else {
-        nameError.style.display = "none";
-        nameInput.classList.remove("is-invalid");
-    }
-});
-
-document.getElementById("inputEmail").addEventListener("blur", function (event) {
-    const emailInput = event.target;
-    const emailError = document.getElementById("emailError");
-
-    if (!validateEmail(emailInput.value)) {
-        emailError.textContent = "Invalid email address";
-        emailError.style.display = "block";
-        emailInput.classList.add("is-invalid");
-    } else {
-        emailError.style.display = "none";
-        emailInput.classList.remove("is-invalid");
-    }
-});
-
-document.getElementById("phone").addEventListener("blur", function (event) {
-    const phoneInput = event.target;
-    const phoneError = document.getElementById("phoneError");
-
-    if (!validatePhone(phoneInput.value)) {
-        phoneError.textContent = "Invalid phone number";
-        phoneError.style.display = "block";
-        phoneInput.classList.add("is-invalid");
-    } else {
-        phoneError.style.display = "none";
-        phoneInput.classList.remove("is-invalid");
-    }
-});
-
-
-
-document.getElementById("inputPassword").addEventListener("keyup", function (event) {
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(function () {
-        updatePasswordStrength(event.target.value);
-    }, doneTypingInterval);
-});
-document.getElementById("inputConfirmPassword").addEventListener("input", function () {
-    const passwordInput = document.getElementById("inputPassword");
-    const confirmPasswordInput = document.getElementById("inputConfirmPassword");
-    const confirmPasswordError = document.getElementById("confirmPasswordError");
-
-    if (passwordInput.value !== confirmPasswordInput.value) {
-        confirmPasswordError.textContent = "Passwords do not match";
-        confirmPasswordError.style.display = "block";
-        confirmPasswordInput.classList.add("is-invalid");
-    } else {
-        confirmPasswordError.style.display = "none";
-        confirmPasswordInput.classList.remove("is-invalid");
-    }
-});
-document.getElementById("signupForm").addEventListener("submit", function (event) {
-    const nameInput = document.getElementById("inputName");
-    const nameError = document.getElementById("nameError");
-    const emailInput = document.getElementById("inputEmail");
-    const emailError = document.getElementById("emailError");
-    const phoneInput = document.getElementById("phone");
-    const phoneError = document.getElementById("phoneError");
-    const passwordInput = document.getElementById("inputPassword");
-    const confirmPasswordInput = document.getElementById("inputConfirmPassword");
-    const confirmPasswordError = document.getElementById("confirmPasswordError");
-
-    if (!validateName(nameInput.value.trim())) {
-        nameError.textContent = "Invalid name";
-        nameError.style.display = "block";
-        nameInput.classList.add("is-invalid");
-        event.preventDefault();
-    } else {
-        nameError.style.display = "none";
-        nameInput.classList.remove("is-invalid");
+    function validateEmail(email) {
+        var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return emailRegex.test(email);
     }
 
-    if (!validateEmail(emailInput.value.trim())) {
-        emailError.textContent = "Invalid email";
-        emailError.style.display = "block";
-        emailInput.classList.add("is-invalid");
-        event.preventDefault();
-    } else {
-        emailError.style.display = "none";
-        emailInput.classList.remove("is-invalid");
+    function validatePhone(phone) {
+        var phoneRegex = /^\d{4}-\d{7}$/;
+        return phoneRegex.test(phone);
     }
 
-    if (!validatePhone(phoneInput.value.trim())) {
-        phoneError.textContent = "Invalid phone number";
-        phoneError.style.display = "block";
-        phoneInput.classList.add("is-invalid");
-        event.preventDefault();
-    } else {
-        phoneError.style.display = "none";
-        phoneInput.classList.remove("is-invalid");
+    function validateName(name) {
+        var nameRegex = /^[a-zA-Z]+(\s[a-zA-Z]+)?$/;
+        return nameRegex.test(name);
     }
 
-    if (!validatePassword(passwordInput.value)) {
-        passwordInput.classList.add("is-invalid");
-        event.preventDefault();
-    } else {
-        passwordInput.classList.remove("is-invalid");
+    function validatePassword(password) {
+        var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        return passwordRegex.test(password);
     }
 
-    if (passwordInput.value !== confirmPasswordInput.value) {
-        confirmPasswordError.textContent = "Passwords do not match";
-        confirmPasswordError.style.display = "block";
-        confirmPasswordInput.classList.add("is-invalid");
-        event.preventDefault();
-    } else {
-        confirmPasswordError.style.display = "none";
-        confirmPasswordInput.classList.remove("is-invalid");
-    }
-});
+    function updatePasswordStrength(password) {
+        var passwordStrengthElement = $("#passwordStrength");
+        var passwordInput = $("#inputPassword");
+        var passwordError = $("#passwordError");
 
-document.getElementById("inputPassword").addEventListener("input", function (event) {
-    updatePasswordStrength(event.target.value);
-});
+        if (!validatePassword(password)) {
+            passwordInput.removeClass("password-medium password-strong").addClass("password-weak");
+            passwordStrengthElement.text("Password Strength: Weak").css("color", "red");
+        } else if (password.length >= 8 && password.length <= 12) {
+            passwordInput.removeClass("password-weak password-strong").addClass("password-medium");
+            passwordStrengthElement.text("Password Strength: Medium").css("color", "orange");
+        } else if (password.length > 12) {
+            passwordInput.removeClass("password-weak password-medium").addClass("password-strong");
+            passwordStrengthElement.text("Password Strength: Strong").css("color", "green");
+        }
+    }
+
+    $("#inputName").blur(function() {
+        var nameInput = $(this);
+        var nameError = $("#nameError");
+
+        if (!validateName(nameInput.val().trim())) {
+            nameError.text("Invalid name").show();
+            nameInput.addClass("is-invalid");
+        } else {
+            nameError.hide();
+            nameInput.removeClass("is-invalid");
+        }
+    });
+
+    $("#inputEmail").blur(function() {
+        var emailInput = $(this);
+        var emailError = $("#emailError");
+
+        if (!validateEmail(emailInput.val())) {
+            emailError.text("Invalid email address").show();
+            emailInput.addClass("is-invalid");
+        } else {
+            emailError.hide();
+            emailInput.removeClass("is-invalid");
+        }
+    });
+
+    $("#phone").blur(function() {
+        var phoneInput = $(this);
+        var phoneError = $("#phoneError");
+
+        if (!validatePhone(phoneInput.val())) {
+            phoneError.text("Invalid phone number").show();
+            phoneInput.addClass("is-invalid");
+        } else {
+            phoneError.hide();
+            phoneInput.removeClass("is-invalid");
+        }
+    });
+
+    var typingTimer;
+    var doneTypingInterval = 1000;
+    $("#inputPassword").keyup(function() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function() {
+            updatePasswordStrength($("#inputPassword").val());
+        }, doneTypingInterval);
+    });
+
+    $("#inputConfirmPassword").on("input", function() {
+        var passwordInput = $("#inputPassword");
+        var confirmPasswordInput = $(this);
+        var confirmPasswordError = $("#confirmPasswordError");
+
+        if (passwordInput.val() !== confirmPasswordInput.val()) {
+            confirmPasswordError.text("Passwords do not match").show();
+            confirmPasswordInput.addClass("is-invalid");
+        } else {
+            confirmPasswordError.hide();
+            confirmPasswordInput.removeClass("is-invalid");
+        }
+    });
+
+    $("#signupForm").submit(function(event) {
+        var nameInput = $("#inputName");
+        var nameError = $("#nameError");
+        var emailInput = $("#inputEmail");
+        var emailError = $("#emailError");
+        var phoneInput = $("#phone");
+        var phoneError = $("#phoneError");
+        var passwordInput = $("#inputPassword");
+        var confirmPasswordInput = $("#inputConfirmPassword");
+        var confirmPasswordError = $("#confirmPasswordError");
+
+        if (!validateName(nameInput.val().trim())) {
+            nameError.text("Invalid name").show();
+            nameInput.addClass("is-invalid");
+            event.preventDefault();
+        } else {
+            nameError.hide();
+            nameInput.removeClass("is-invalid");
+        }
+
+        if (!validateEmail(emailInput.val().trim())) {
+            emailError.text("Invalid email").show();
+            emailInput.addClass("is-invalid");
+            event.preventDefault();
+        } else {
+            emailError.hide();
+            emailInput.removeClass("is-invalid");
+        }
+
+        if (!validatePhone(phoneInput.val().trim())) {
+            phoneError.text("Invalid phone number").show();
+            phoneInput.addClass("is-invalid");
+            event.preventDefault();
+        } else {
+            phoneError.hide();
+            phoneInput.removeClass("is-invalid");
+        }
+
+        if (!validatePassword(passwordInput.val())) {
+            passwordInput.addClass("is-invalid");
+            event.preventDefault();
+        } else {
+            passwordInput.removeClass("is-invalid");
+        }
+
+        if (passwordInput.val() !== confirmPasswordInput.val()) {
+            confirmPasswordError.text("Passwords do not match").show();
+            confirmPasswordInput.addClass("is-invalid");
+            event.preventDefault();
+        } else {
+            confirmPasswordError.hide();
+            confirmPasswordInput.removeClass("is-invalid");
+        }
+    });
+
+    $("#inputPassword").on("input", function() {
+        updatePasswordStrength($(this).val());
+    });
 });

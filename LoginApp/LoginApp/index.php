@@ -8,6 +8,22 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="scripts/index.js"></script> 
 <script> src="scripts/showpassword.js"</script>
+<?php
+session_start();
+
+// Check if the user ID session variable is set
+if (isset($_SESSION['id'])&& $_SESSION['IsAdmin']){
+    // Redirect the user to the login page or display an error message
+    header('Location: ../adminDashboard.php');
+   ; // Stop further execution of the script
+}
+elseif(isset($_SESSION['id']) &&!isset($_SESSION['IsAdmin']))
+{
+  header('Location: ../userDashboard.php');
+    
+}
+
+?>
 </head>
 <body id="LoginForm">
 <div class="container">
