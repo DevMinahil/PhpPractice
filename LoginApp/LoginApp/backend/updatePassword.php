@@ -1,7 +1,6 @@
 <?php
 
-require_once 'UserRepository.php';
-$user=new UserRepository();
+require_once 'userFactory.php';
 $new = $_POST['password'];
 session_start();
 

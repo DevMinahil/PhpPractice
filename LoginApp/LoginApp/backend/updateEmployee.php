@@ -1,12 +1,10 @@
 <?php 
-require_once 'UserRepository.php';
-$user=new UserRepository();
-$username = $_POST['username'];
+require_once 'userFactory.php';
+$username = $_POST['name'];
 $email = $_POST['email'];
 $password = $_POST['password'];
-$phoneNumber = $_POST['phoneNumber'];
+$phoneNumber = $_POST['phone'];
 $employeeId = $_POST['EmployeeId'];
-
 
 $stmt=$user->update($email,$password,$phoneNumber,$username,$employeeId);
 $result=$stmt->affected_rows;

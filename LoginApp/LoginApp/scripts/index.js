@@ -1,5 +1,4 @@
-
-    // Show the signup success modal if the success message is present in the URL
+  // Show the signup success modal if the success message is present in the URL
     $(document).ready(function() {
         if (window.location.search.indexOf('successMessage') > -1) {
             $('#signupSuccessModal').modal('show');

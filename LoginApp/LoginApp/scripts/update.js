@@ -18,11 +18,11 @@
                 
 
                    console.log("Responce is displyed");
-                   $('#username').val(response.name);
+                   $('#inputName').val(response.name);
                    $("#EmployeeId").val(response.id)
-                   $('#email').val(response.email);
-                   $('#password').val(response.password);
-                   $('#phoneNumber').val(response.phone);
+                   $('#inputEmail').val(response.email);
+                   $('#inputPassword').val(response.password);
+                   $('#phone').val(response.phone);
                 },
                 error: function() {
                     console.log('Error occurred while fetching employee data.');

@@ -1,7 +1,8 @@
 
 <?php
-require_once 'UserRepository.php';
-$user=new UserRepository();
+
+require_once 'userFactory.php';
+
 
 $employees = [];
 $stmt=$user->viewAll();

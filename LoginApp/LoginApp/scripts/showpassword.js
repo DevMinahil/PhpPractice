@@ -4,6 +4,7 @@ $(document).ready(function() {
 
     
     $('#showPassword').change(function() {
+        console.log("CLick hogayee hai baba g")
         var passwordInput = $('#inputPassword');
         if (this.checked) {
             passwordInput.attr('type', 'text');

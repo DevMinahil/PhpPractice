@@ -1,20 +1,25 @@
 <?php
 session_start();
 include('connection.php');
+require_once 'userFactory.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    $username = $_POST['email'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
+   
+
 
 
    
-    $sql = "SELECT * FROM users WHERE email = '$username' AND password = '$password'";
-    $result = mysqli_query($conn, $sql);
+    $stmt=$user->LoginUser($email,$password);
+    $result = $stmt->get_result();
+    echo "Query chal gai hai";
 
     if (mysqli_num_rows($result) == 0) {
         $_SESSION['message'] = "Login Failed. User not Found!";
         header('location: ../index.php?loginError=1');
+        exit();
     } else {
         $row = mysqli_fetch_array($result);
     if (isset($_POST['remember'])) {
@@ -26,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['id'] = $row['id'];
         if ($row['IsAdmin'] == 1) {
             $_SESSION['IsAdmin'] = 1;
-            echo $row;
+           
             header('location:../adminDashboard.php');
         } else {
             header('location: ../userDashboard.php');

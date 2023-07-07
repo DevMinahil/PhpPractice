@@ -1,0 +1,24 @@
+.body{
+   
+    
+    background-image: url('../images/UNO_Logo.svg');
+}
+.custom_button
+{
+    height: 104px;
+    background-color: goldenrod;
+    margin-bottom: 1cm;
+    width: 100px;
+    margin-right: 281px;
+ 
+   
+   
+}
+.btn-group-vertical {
+    position: absolute;
+    top: 30%;
+    left: 40%;
+
+   
+
+  }
