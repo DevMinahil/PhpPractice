@@ -106,6 +106,12 @@ class Deck
         }
 
     }
+    public function typeOAction($card)
+    {
+        $number = explode(" ", $card);
+        return $number[0];
+
+    }
     // it will be used to insert card at the ending of the deck
     public function insertCard($card)
     {
@@ -120,13 +126,22 @@ class Deck
     public function cardColor($card)
     {
         $number = explode(" ", $card);
+        if(sizeof($number)>3)
+        {
+            return $number[2];
+        }
        
         if(sizeof($number)==3)
-        {
+
+        { 
+           // print_r($number);
            
             if($number[2]!='')
             {
-               // print("The second if is also if is true :");
+              
+            
+
+
               return($number[2]);
             }
             else
@@ -155,9 +170,9 @@ class Deck
 
 
 
-// $card = $deck->returnCards();
 
-// print_r($deck->typeOfCard("Draw two Green"));
+// $deck=new Deck();
+//  print_r($deck->cardColor("Draw two Yellow"));
 // print_r($deck->insertCard("Wild"));
 // print_r($deck->drawCards(1));
 // $card = $deck->returnCards();
