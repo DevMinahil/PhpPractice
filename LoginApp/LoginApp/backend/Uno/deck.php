@@ -7,11 +7,13 @@ class Deck
     private $colors;
     private $numbers;
     private $special;
+    private string $currentColor;
     public function __construct()
     {
         $this->colors = ['Red', 'Green', 'Blue', 'Yellow'];
         $this->numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Draw two', "Skip", "Reverse"];
         $this->special = ["Wild", "DrawFourWild"];
+        $this->currentColor = '';
     }
     //This function is responsible for generating cards for uno game 
     //rules 19 Red cards – 0 to 9.
@@ -22,6 +24,16 @@ class Deck
     // 8 Reverse cards – two cards of each color.
     // 8 Draw cards – two cards of each color.
     // 8 Black cards – 4 wild cards and 4 Wild Draw 4 cards.
+    public function setColor(string $color)
+    {
+       $this->currentColor=$color;
+       
+    }
+    public function getColor()
+    {
+       return $this->currentColor;
+       
+    }
 
     public function generateDeck()
     {
@@ -106,7 +118,7 @@ class Deck
         }
 
     }
-    public function typeOAction($card)
+    public function typeOfAction($card)
     {
         $number = explode(" ", $card);
         return $number[0];

@@ -1,56 +1,49 @@
 <?php
-class player{
+class Player
+{
+    public string $name;
+    private array $cards;
 
-    public $name;
-    private $cards;
-    public $isTurn;
-
-    public function __construct($name) 
+    public function __construct(string $name)
     {
         $this->name = $name;
+        $this->cards = [];
     }
-    public function getName()
+
+    public function getName(): string
     {
         return $this->name;
     }
-    public function setCards($card)
+
+    public function setCards(array $cards)
     {
-        $this->cards=$card;
+        $this->cards = $cards;
     }
-    public function getCards()
+
+    public function getCards(): array
     {
-       return $this->cards;
+        return $this->cards;
     }
-    public function getTurn()
+
+    public function noOfCardsLeft(): int
     {
-        return $this->isTurn;
+        return count($this->cards);
     }
-    public function setTurn()
-    {
-        $this->isTurn=1;
-    }
-    public function getCardWithId($id)
-    {
-        return $this->cards[$id];
-    }
-    //this function will be used to play card by each player
-    public function noOfCardsLeft()
-    {
-        return sizeof($this->cards);
-    }
+
     public function removeCard($card)
     {
-    $index = array_search($card, $this->cards);
-    if ($index !== false) {
-        unset($this->cards[$index]);
-    }
-    return sizeof($this->cards);
+        $index = array_search($card, $this->cards);
+
+        if ($index !== false) {
+            unset($this->cards[$index]);
+            $this->cards = array_values($this->cards);
+        }
     }
 
-
-    
+    public function addCards(array $newCards)
+    {
+        $this->cards = array_merge($this->cards, $newCards);
+        echo "Added " . count($newCards) . " card(s) to the player's hand.\n";
+    }
 }
-
-
-
 ?>
