@@ -4,24 +4,27 @@ require_once('player.php');
 
 class Game
 {
-    private bool $isReverse;
+
     private int $numOfPlayers;
-    private array $players;
-    private array $nameOfPlayers = [];
+    private  $players;
+   
+    private $direction;
     public Deck $deck;
     private array $cardPile = [];
     private string $deckColor = '';
+    private $currentColor;
 
     public function __construct($direction, $numOfPlayers, $name)
     {
-        $this->isReverse = false;
-        $this->numOfPlayers = $numOfPlayers;
-        $this->nameOfPlayers = $name;
-        $this->deck = new Deck();
-        $temp = new Player($name[0]);
 
-        for ($i = 1; $i < $this->numOfPlayers; $i++) {
-            $this->players = array($temp, new Player($name[$i]));
+        $this->numOfPlayers = $numOfPlayers;
+      
+        $this->direction = $direction;
+        $this->deck = new Deck();
+        $this->players=array();
+
+        for ($i = 0; $i < $this->numOfPlayers; $i++) {
+            $this->players[] = new Player($name[$i]);
         }
 
         $this->deck->generateDeck();
@@ -39,6 +42,7 @@ class Game
         array_push($this->cardPile, $card);
     }
 
+
     public function getNumOfPlayers(): int
     {
         return $this->numOfPlayers;
@@ -47,6 +51,14 @@ class Game
     public function setNumOfPlayers(int $numOfPlayers): void
     {
         $this->numOfPlayers = $numOfPlayers;
+    }
+    public function getCurrentColor()
+    {
+        return $this->currentColor;
+    }
+    public function setCurrentColor($color)
+    {
+        $this->currentColor = $color;
     }
 
     public function getPlayer($id)
@@ -95,13 +107,8 @@ class Game
                 return true;
             }
 
-            if ($this->deck->cardColor($card) == $this->deck->getColor()) {
+            if ($this->currentColor == $this->deck->cardColor($card)) {
                 return true;
-            }
-            if ($this->getDeckColor()== $this->deck->cardColor($card)) {
-                print("This condition is truee");
-                return true;
-                
             }
         }
 
@@ -129,9 +136,12 @@ class Game
             return true;
         }
 
-        if ($this->getDeckColor()== $this->deck->cardColor($card)) {
+        if ($this->getDeckColor() == $this->deck->cardColor($card)) {
             return true;
-            
+        }
+        if ($this->currentColor == $this->deck->cardColor($card)) {
+
+            return true;
         }
         return false;
     }
@@ -148,23 +158,20 @@ class Game
 
     public function getDirection()
     {
-        return $this->isReverse ? -1 : 1;
+        return $this->direction;
     }
 
     public function setDirection($direction)
     {
-        $this->isReverse = ($direction === -1);
+        $this->direction = $direction;
     }
 
     public function typeOfAction($card)
     {
-        if ($this->deck->typeOfCard($card) == 'action') {
-            if ($this->deck->typeOfAction($card) == 'Wild' || $this->deck->typeOfAction($card) == 'DrawFourWild') {
-                return 'Wild';
-            }
+      
             return $this->deck->typeOfAction($card);
-        }
-        return '';
+       
+       
     }
 
     public function getPlayerCards($id)
@@ -186,18 +193,6 @@ class Game
     {
         return $this->deckColor;
     }
-
-    public function getNextPlayer($currentTurn)
-    {
-        $numOfPlayers = count($this->players);
-        if ($this->isReverse) {
-            $nextPlayer = ($currentTurn === 1) ? $numOfPlayers : $currentTurn - 1;
-        } else {
-            $nextPlayer = ($currentTurn === $numOfPlayers) ? 1 : $currentTurn + 1;
-        }
-       
-        return $nextPlayer;
-    }
 }
 
 echo "Welcome to Uno Game!\n";
@@ -214,77 +209,176 @@ $game->distributeCards();
 $noOfPlayers = $numOfPlayers;
 
 $playing = true;
-$turn = 1;
-
+$turn = 0;
 while ($playing) {
-    $currentPlayer = $game->getPlayer($turn - 1);
-    $currentPlayerCards = $game->viewInHandCards($turn - 1);
 
-    echo "----------------------------------------\n";
-    echo "Player " . $currentPlayer->getName() . "'s turn\n";
+    
+    echo "Player " . $game->getPlayer($turn)->getName() . "'s turn\n";
     echo "Current card on top of the pile: " . $game->getCardPile() . "\n";
-    print("Your cards: " . "\n");
-   
-
-    if ($game->canPlay($turn - 1)) {
-      
+    print_r($game->viewInHandCards($turn));
+    if ($game->canPlay($turn)) {
         $cardIndex = (int) readline('Enter the index of the card you want to play: ');
 
-        while (!($game->validCard($turn - 1, $cardIndex))) {
+        while (!($game->validCard($turn, $cardIndex))) {
             $cardIndex = (int) readline("Invalid card! Enter the index of a valid card: ");
         }
-
-        $card = $currentPlayerCards[$cardIndex];
-        $game->removePlayerCard($turn - 1, $card);
+        $card = $game->getPlayer($turn)->getCards()[$cardIndex];
+      
+        $game->removePlayerCard($turn, $card);
         $game->setCardPile($card);
+        if ($game->getPlayerCards($turn) == 0) {
+                echo "Congratulations, " . $currentPlayer->getName() . " has won the game!\n";
+                $playing = false;
+                
+            
+            } 
+            else
+            {
+                if ($game->typeOfAction($card) == 'Wild') 
+                {
+                    echo "Wild card is played.\n";
+                    $colors = ["Red", "Blue", "Green", "Yellow"];
+                    print_r($colors);
+                    $colorIndex = (int) readline('Enter the index of color :');
+                    $game->setCurrentColor($colors[$colorIndex]);
+                    echo  $game->getCurrentColor();
+                }
+                if ($game->typeOfAction($card) == 'Reverse') //working
+                {
+                    $game->setDirection(-$game->getDirection());
+                } 
+                if ($game->typeOfAction($card) == 'Skip') {
+                    echo "Uno Skip card is played. The next player's turn is skipped.\n";
+                    echo $game->getPlayer($turn)->getName(). "Turn is skipped ";
+                    $turn = $turn + $game->getDirection();
+                    if ($turn == $noOfPlayers) {
+                        $turn = 0;
+                    } elseif ($turn < 0) {
+                        $turn = $noOfPlayers - 1;
+                 }
+                } elseif ($game->typeOfAction($card) == 'Draw') {
+                    echo "Draw Two card is played.";
+                    $drawnCards = $game->drawFromDeck(2);
+                    $game->getPlayer($turn)->addCards($drawnCards);
+                    $DrawTwoPlayer = $turn + $game->getDirection();
+                    if ($DrawTwoPlayer == $noOfPlayers) {
+                        $DrawTwoPlayer = 0;
+                    } elseif ($DrawTwoPlayer < 0) {
+                        $DrawTwoPlayer = $noOfPlayers - 1;
+                    }
+                    $game->getPlayer($DrawTwoPlayer)->addCards($drawnCards);
+                } elseif ($game->typeOfAction($card) == 'DrawFourWild') //yeh bhi nhi chal rhaa
+                {
+                    echo "Draw Four Wild card is played.\n";
+                    $colors = ["Red", "Blue", "Green", "Yellow"];
+                    print_r($colors);
+                    $colorIndex = (int) readline('Enter the index of color :');
+                    $game->setCurrentColor($colors[$colorIndex]);
+                    $drawnCards = $game->drawFromDeck(4);
+                    $DrawFourPlayer = $turn + $game->getDirection();
+                  
+                    if ($DrawFourPlayer == $noOfPlayers) {
+                        $DrawFourPlayer= 0;
+                    } elseif ($DrawFourPlayer < 0) {
+                        $DrawFourPlayer = $noOfPlayers - 1;
+                    }
+                    echo "Cards has been added :";
 
-        if ($game->typeOfAction($card) == 'Reverse') //working
-        {
-            $game->setDirection(-$game->getDirection());
-        } elseif ($game->typeOfAction($card) == 'Skip') {
-            echo "Uno Skip card is played. The next player's turn is skipped.\n";
-            $turn = $game->getNextPlayer($turn);
-            $turn = $game->getNextPlayer($turn);
+                    $game->getPlayer($DrawFourPlayer)->addCards($drawnCards);
+                    echo $game->getCurrentColor();
+                }
+            }
 
-        } elseif ($game->typeOfAction($card) == 'Draw') {
-            echo "Draw Two card is played. The next player must draw two cards and skip their turn.\n";
-            $nextPlayerId = $game->getNextPlayer($turn);
-            $drawnCards = $game->drawFromDeck(2);
-            $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
-            $turn = $game->getNextPlayer($nextPlayerId);
-        } elseif ($game->typeOfAction($card) == 'Wild') //yeh nahi chal rhaa
-        {
-            echo "Wild card is played.\n";
-            $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
-            $game->setDeckColor($chosenColor);
-            $turn = $game->getNextPlayer($turn);
-        } elseif ($game->typeOfAction($card) == 'DrawFourWild') //yeh bhi nhi chal rhaa
-        {
-            echo "Draw Four Wild card is played.\n";
-            $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
-            $game->setDeckColor($chosenColor);
-            $nextPlayerId = $game->getNextPlayer($turn);
-            $drawnCards = $game->drawFromDeck(4);
-            $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
-            $turn = $game->getNextPlayer($nextPlayerId);
-        }
 
-        if ($game->getPlayerCards($turn - 1) == 0) {
-            echo "Congratulations, " . $game->getPlayer($turn - 1)->getName() . " has won the game!\n";
-            $playing = false;
-        }
+
+
     } else {
-        echo "You cannot play. You must draw a card.\n";
+        print("U cannot play");
         $drawnCard = $game->drawFromDeck(1);
-        $currentPlayer->addCards($drawnCard);
-
-        
+        $game->getPlayer($turn)->addCards($drawnCard);
     }
-    if ($game->getPlayerCards($turn - 1) == 0) {
-        echo "Congratulations, " . $currentPlayer->getName() . " has won the game!\n";
-        $playing = false;
-       
-    } 
+  
+   
+
+
+    $turn = $turn + $game->getDirection();
+    echo "Turn in updayed here ".$turn;
+    if ($turn == $noOfPlayers) {
+        $turn = 0;
+    } elseif ($turn < 0) {
+        $turn = $noOfPlayers - 1;
+    }
 }
+
+// while ($playing) {
+// $currentPlayer = $game->getPlayer($turn - 1);
+// 
+
+// echo "----------------------------------------\n";
+// echo "Player " . $currentPlayer->getName() . "'s turn\n";
+// echo "Current card on top of the pile: " . $game->getCardPile() . "\n";
+// print("Your cards: " . "\n");
+
+
+// if ($game->canPlay($turn - 1)) {
+
+//     $cardIndex = (int) readline('Enter the index of the card you want to play: ');
+
+//     while (!($game->validCard($turn - 1, $cardIndex))) {
+//         $cardIndex = (int) readline("Invalid card! Enter the index of a valid card: ");
+//     }
+
+//     $card = $currentPlayerCards[$cardIndex];
+//     $game->removePlayerCard($turn - 1, $card);
+//     $game->setCardPile($card);
+
+//     if ($game->typeOfAction($card) == 'Reverse') //working
+//     {
+//         $game->setDirection(-$game->getDirection());
+//     } elseif ($game->typeOfAction($card) == 'Skip') {
+//         echo "Uno Skip card is played. The next player's turn is skipped.\n";
+//         $turn = $game->getNextPlayer($turn);
+//         $turn = $game->getNextPlayer($turn);
+
+//     } elseif ($game->typeOfAction($card) == 'Draw') {
+//         echo "Draw Two card is played. The next player must draw two cards and skip their turn.\n";
+//         $nextPlayerId = $game->getNextPlayer($turn);
+//         $drawnCards = $game->drawFromDeck(2);
+//         $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
+//         $turn = $game->getNextPlayer($nextPlayerId);
+//     } elseif ($game->typeOfAction($card) == 'Wild') //yeh nahi chal rhaa
+//     {
+//         echo "Wild card is played.\n";
+//         $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
+//         $game->setDeckColor($chosenColor);
+//         $turn = $game->getNextPlayer($turn);
+//     } elseif ($game->typeOfAction($card) == 'DrawFourWild') //yeh bhi nhi chal rhaa
+//     {
+//         echo "Draw Four Wild card is played.\n";
+//         $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
+//         $game->setDeckColor($chosenColor);
+//         $nextPlayerId = $game->getNextPlayer($turn);
+//         $drawnCards = $game->drawFromDeck(4);
+//         $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
+//         $turn = $game->getNextPlayer($nextPlayerId);
+//     }
+
+//     if ($game->getPlayerCards($turn - 1) == 0) {
+//         echo "Congratulations, " . $game->getPlayer($turn - 1)->getName() . " has won the game!\n";
+//         $playing = false;
+//     }
+// } else {
+//     echo "You cannot play. You must draw a card.\n";
+//     $drawnCard = $game->drawFromDeck(1);
+//     $currentPlayer->addCards($drawnCard);
+
+
+// }
+// if ($game->getPlayerCards($turn - 1) == 0) {
+//     echo "Congratulations, " . $currentPlayer->getName() . " has won the game!\n";
+//     $playing = false;
+
+// } 
+//}
 
 echo "Game Over!\n";
