@@ -118,13 +118,13 @@ class Game
 
         return false;
     }
-
+//if reverse k upar reverse ho and skip k upar skip wo nahi horhaa manages
     public function validCard($id, $cardIndex)
     {
         $firstCard = $this->getCardPile();
         $cards = $this->players[$id]->getCards();
         $card = $cards[$cardIndex];
-        echo $this->getDeckColor();
+        echo json_encode($this->currentColor);
 
         if ($this->deck->typeOfCard($card) == 'number') {
             if ($this->deck->cardNumber($card) == $this->deck->cardNumber($firstCard)) {
@@ -143,7 +143,7 @@ class Game
         if ($this->getDeckColor() == $this->deck->cardColor($card)) {
             return true;
         }
-        if ($this->currentColor == $this->deck->cardColor($card)) {
+        if ($this->currentColor === $this->deck->cardColor($card)) {
 
             return true;
         }
@@ -198,7 +198,7 @@ class Game
         return $this->deckColor;
     }
 }
-
+//reverse with different colors are not catered
 // echo "Welcome to Uno Game!\n";
 
 // $numOfPlayers = (int) readline('Enter the number of players in the game: ');

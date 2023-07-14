@@ -25,30 +25,31 @@ if (!isset($_SESSION['game'])) {
 
 
 $currentPlayerCards = $game->viewInHandCards($turn);
+
 $canPlay = $game->canPlay($turn);
 
 $cardPile= $game->getCardPile();
-$cardPileColor=$game->getDeck()->cardColor($cardPile);
-$playerName=$game->getPlayer($turn)->getName();
+ $cardPileColor=$game->getDeck()->cardColor($cardPile);
+ $playerName=$game->getPlayer($turn)->getName();
 $cardColor=array();
 foreach($currentPlayerCards as $cards)
 {
    $cardColor[]= $game->getDeck()->cardColor($cards);
 }
-if(!$canPlay)
-{ $drawnCard = $game->drawFromDeck(1);
- $game->getPlayer($turn)->addCards($drawnCard);
- $turn = $turn + $game->getDirection();
- if ($turn == $game->getNumOfPlayers()) {
-     $turn = 0;
- } elseif ($turn < 0) {
-     $turn = $game->getNumOfPlayers() - 1;
- }
+// if(!$canPlay)
+// { $drawnCard = $game->drawFromDeck(1);
+//  $game->getPlayer($turn)->addCards($drawnCard);
+//  $turn = $turn + $game->getDirection();
+//  if ($turn == $game->getNumOfPlayers()) {
+//      $turn = 0;
+//  } elseif ($turn < 0) {
+//      $turn = $game->getNumOfPlayers() - 1;
+//  }
  $_SESSION['turn']=$turn;
 
 
 
-}
+//}
 
 $responseData = [
     'cards' => $currentPlayerCards,

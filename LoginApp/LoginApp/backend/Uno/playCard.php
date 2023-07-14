@@ -25,12 +25,14 @@ if (!isset($_SESSION['game'])) {
         if (!$game->validCard($turn, $index)) {
             $response = ['error' => 'error! Invalid Car'];
             echo json_encode($response);
+         
 
         } 
         else {
 
             $card = $game->getPlayer($turn)->getCards()[$index];
             echo json_encode($card);
+            echo json_encode($game->getCurrentColor());
 
             $game->removePlayerCard($turn, $card);
             $game->setCardPile($card);
@@ -51,13 +53,22 @@ if (!isset($_SESSION['game'])) {
                         else {
                         $color = $_POST['color'];
                         $game->setCurrentColor($color);
+
                         echo json_encode("Now the current color is :".$game->getCurrentColor());
                          }
 
                     }
                     if ($game->typeOfAction($card) == 'Reverse') {
                     $game->setDirection(($game->getDirection())*-1);
-                    echo json_encode("Rerverse card is played :");
+                    echo $game->getDirection();
+                    $turn2 = $turn + $game->getDirection();
+                    if ($turn2 == $game->getNumOfPlayers()) {
+                        $turn2 = 0;
+                    } elseif ($turn2 < 0) {
+                        $turn2 = $game->getNumOfPlayers() - 1;
+                    }
+
+                    echo json_encode("Rerverse card is played :"." Now turn is ".$turn2);
                     }
                     if ($game->typeOfAction($card) == 'Skip') {
 

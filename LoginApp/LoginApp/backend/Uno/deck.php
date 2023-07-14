@@ -183,8 +183,8 @@ class Deck
 
 
 
-// $deck=new Deck();
-//  print_r($deck->cardColor("Draw two Yellow"));
+//  $deck=new Deck();
+//   print_r($deck->cardColor("Skip Yellow"));
 // print_r($deck->insertCard("Wild"));
 // print_r($deck->drawCards(1));
 // $card = $deck->returnCards();
