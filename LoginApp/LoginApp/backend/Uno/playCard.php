@@ -8,65 +8,125 @@ session_start();
 
 if (!isset($_SESSION['game'])) {
     echo json_encode("session hi nahi set ");
-   
 
 
-}
 
- else {
-  
+} else {
+
     $turn = $_SESSION['turn'];
     $game = $_SESSION['game'];
-   
-    
+    echo "The value of turn is :", $turn;
+
+
 
 
     if (isset($_POST['index'])) {
         $index = $_POST['index'];
-        if (!$game->validCard($turn - 1, $index)) {
+        if (!$game->validCard($turn, $index)) {
             $response = ['error' => 'error! Invalid Car'];
             echo json_encode($response);
 
-        } else {
-            $currentPlayerCards = $game->viewInHandCards($turn - 1);
-           
-           
-           
-           
-        
-             $game->removePlayerCard($turn - 1,  $currentPlayerCards[$index]);
-             echo $game->viewInHandCards($turn - 1);
-             $game->setCardPile($currentPlayerCards[$index]);
-             $card=$currentPlayerCards[$index];
-             if ($game->typeOfAction($card) == 'Reverse') {
-                            $game->setDirection(!$game->getDirection());
-            } 
-            elseif ($game->typeOfAction($card) == 'Skip') {
-                            echo "Uno Skip card is played. The next player's turn is skipped.\n";
-                            $turn = ($turn % $game->getNumOfPlayers()) + 1;
-            } elseif ($game->typeOfAction($card) == 'Draw') {
-                            echo "Draw Two card is played. The next player must draw two cards and skip their turn.\n";
-                            $nextPlayerId = ($turn % $game->getNumOfPlayers()) + 1;
-                            $drawnCards = $game->drawFromDeck(2);
-                            $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
-                            $turn = $nextPlayerId;
+        } 
+        else {
+
+            $card = $game->getPlayer($turn)->getCards()[$index];
+            echo json_encode($card);
+
+            $game->removePlayerCard($turn, $card);
+            $game->setCardPile($card);
+            //wining condition
+            if ($game->getPlayerCards($turn) == 0) {
+                echo json_encode("Congratulations, " . $game->getPlayer($turn)->getName() . " has won the game!");
             }
-                        // } elseif ($game->typeOfAction($card) == 'Wild') {
-                        //     echo "Wild card is played.\n";
-                        //     $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
-                        //     $game->setDeckColor($chosenColor);
-                        // } elseif ($game->typeOfAction($card) == 'DrawFourWild') {
-                        //     echo "Draw Four Wild card is played.\n";
-                        //     $chosenColor = readline("Choose the next color (Red, Green, Blue, Yellow): ");
-                        //     $game->setDeckColor($chosenColor);
-                        //     $nextPlayerId = ($turn % $noOfPlayers) + 1;
-                        //     $drawnCards = $game->drawFromDeck(4);
-                        //     $game->getPlayer($nextPlayerId - 1)->addCards($drawnCards);
-                        //     $turn = $nextPlayerId;
-                        // }
-            // echo json_encode("sahi khail gaya hai bhai");
+            //agar nahi jeeta sad life
+            else 
+            { 
+                   if ($game->typeOfAction($card) == "Wild") {
+                    //check the disered color for the user
+                        if (!isset($_POST['color'])) {
+                        echo json_encode("Select the color first");
+                        exit();
+                         }
+                    //color day diya hai user nay
+                        else {
+                        $color = $_POST['color'];
+                        $game->setCurrentColor($color);
+                        echo json_encode("Now the current color is :".$game->getCurrentColor());
+                         }
+
+                    }
+                    if ($game->typeOfAction($card) == 'Reverse') {
+                    $game->setDirection(($game->getDirection())*-1);
+                    echo json_encode("Rerverse card is played :");
+                    }
+                    if ($game->typeOfAction($card) == 'Skip') {
+
+                   
+                    $turn = $turn + $game->getDirection();
+                    if ($turn == $noOfPlayers) {
+                        $turn = 0;
+                    } elseif ($turn < 0) {
+                        $turn = $noOfPlayers - 1;
+                    }
+
+                    echo json_encode($game->getPlayer($turn)->getName() . "Turn is skipped ");
+                    } 
+                    elseif ($game->typeOfAction($card) == 'Draw') {
+        
+                    $drawnCards = $game->drawFromDeck(2);
+                    $game->getPlayer($turn)->addCards($drawnCards);
+                    $DrawTwoPlayer = $turn + $game->getDirection();
+                    if ($DrawTwoPlayer == $noOfPlayers) {
+                        $DrawTwoPlayer = 0;
+                    } elseif ($DrawTwoPlayer < 0) {
+                        $DrawTwoPlayer = $noOfPlayers - 1;
+                    }
+                    $game->getPlayer($DrawTwoPlayer)->addCards($drawnCards);
+                    echo json_encode("Draw Two card is played. Cards are added in ".$game->getPlayer($DrawTwoPlayer)->getName());
+                    } 
+                    elseif ($game->typeOfAction($card) == 'DrawFourWild') {
+                        echo json_encode("Draw four wild ki if condition true hai ");
+                    if (!isset($_POST['color'])) {
+                        echo json_encode("Select the color first");
+                        exit();
+                    }
+                    //color day diya hai user nay
+                    else {
+                        $color = $_POST['color'];
+                        $game->setCurrentColor($color);
+                        $drawnCards = $game->drawFromDeck(4);
+                        $DrawFourPlayer = $turn + $game->getDirection();
+                        if ($DrawFourPlayer == $noOfPlayers) {
+                            $DrawFourPlayer = 0;
+                        } elseif ($DrawFourPlayer < 0) {
+                            $DrawFourPlayer = $noOfPlayers - 1;
+                        }
+                        $game->getPlayer($DrawFourPlayer)->addCards($drawnCards);
+                        json_encode("DrawFourWild Card has been added to ". $game->getPlayer($DrawFourPlayer)->getName()." Cards :");
+
+
+                       }
+                    }
+
+            
+                
+                    $turn = $turn + $game->getDirection();
+                    if ($turn == $game->getNumOfPlayers()) {
+                        $turn = 0;
+                    } elseif ($turn < 0) {
+                        $turn = $game->getNumOfPlayers() - 1;
+                    }
+                    $_SESSION['turn']=$turn;
+                    $_SESSION['game']=$game;
+
+                }
 
         }
+       
+     
+   
+
+
 
     }
 }
@@ -74,8 +134,3 @@ if (!isset($_SESSION['game'])) {
 
 
 // } 
-
-
-
-
-?>

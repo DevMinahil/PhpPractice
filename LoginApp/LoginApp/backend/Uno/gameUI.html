@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>UNO Game</title>
+    <link href="game.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="player-info">
+            <span>Player:</span>
+            <span id="player-name"></span>
+
+        </div>
+        
+<div id="color"></div>
+
+        <div>Discard Pile</div> 
+        <div class='card'>
+           <div id="card-pile"></div>
+        </div>
+
+
+        <div class="player-hand">
+           
+        </div>
+
+        
+
+        <div id="message" class="message"></div>
+
+        <!-- <button class="draw-button" onclick="togglePlayer2Cards()">Toggle Player 2's Cards</button> -->
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            function updateUI() {
+                console.log("In upadte uni");
+
+                $.ajax({
+                    url: "fetchGameState.php",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        const playerHand = $(".player-hand");
+                        playerHand.empty();
+                        console.log(data.cardColors);
+                        $.each(data.cards, function (index, card) {
+                            const cardElement = $("<div></div>")
+                                .addClass("card")
+                                .addClass("player-card")
+                                .addClass(data.cardColors[index])
+                                .addClass(data.canPlay ? "clickable" : "")
+                                .text(card)
+                                .click(() => {
+                                    if (data.canPlay) {
+                                        playCard(card, index);
+                                    }
+                                });
+                            playerHand.append(cardElement);
+                        });
+                        if (!data.canPlay) {
+                            alert("You have to draw a card")
+                        }
+                        if (data.canPlay) {
+                            alert("You Can play")
+                        }
+                        $("#card-pile").text(data.cardPile);
+                        $("#card-pile").addClass(data.cardPileColor);
+                        $("#player-name").text(data.playerName);
+                    },
+                    error: function () {
+                        console.log("Error occurred while updating player cards.");
+                    }
+                });
+
+
+
+            }
+            //card === "Wild"||
+
+            // Function to simulate playing a card
+            function playCard(card, index) {
+                if (card === "Wild" || card == "DrawFourWild") {
+                    var Wild = true;
+                    var colorDropdown = document.createElement("select")
+                    var colors = ["Red", "Blue", "Green", "Yellow"];
+                    for (var i = 0; i < colors.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = colors[i];
+                        option.setAttribute("class", colors[i]);
+                        option.text = colors[i];
+                        colorDropdown.appendChild(option);
+                    }
+                    var container = document.getElementById("color-dropdown-container");
+                    container.innerHTML = "";
+                    container.appendChild(colorDropdown);
+                }
+                if (Wild == true) {
+                    colorDropdown.addEventListener("change", function () {
+                        selectedColor = this.value;
+                        console.log("Selected color:", selectedColor);
+                        console.log("Played card:", card, index);
+                        $.ajax({
+                            url: 'playCard.php',
+                            type: "POST",
+                            data: { "index": index, "color": selectedColor },
+                            success: function (data) {
+                                if (data) {
+                                    alert(data);
+                                    updateUI();
+                                }
+                            },
+                            error: function () {
+                                console.log("Unexpected error");
+                            }
+
+                        })
+
+                    })
+                }
+                else{
+                    $.ajax({
+                        url: 'playCard.php',
+                        type: "POST",
+                        data: { "index": index},
+                        success: function (data) {
+                            if (data) {
+                                alert(data);
+                              updateUI();
+                            }
+                        },
+                        error: function () {
+                            console.log("Unexpected error");
+                        }
+
+                    });
+
+                
+                }
+
+            }
+
+            
+            // Initial update of the UI
+            updateUI();
+        });
+    </script>
+</body>
+
+</html>

@@ -59,6 +59,22 @@ body {
   {
     background-color: blue;
   }
+  .Wild
+  {
+    background-color: pink;
+  }
+  .color-dropdown-container
+  {
+    margin: 16px;
+    margin-left: 17px;
+    width: 60px;
+  }
+  .option:hover
+  {
+   background-color: #ddd;
+  }
+  
+
   
 
   .deck {
