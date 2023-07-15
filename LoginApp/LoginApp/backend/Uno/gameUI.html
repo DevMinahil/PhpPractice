@@ -5,6 +5,8 @@
     <title>UNO Game</title>
     <link href="game.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="gameUI.js"></script>
+ 
 </head>
 
 <body>
@@ -35,136 +37,7 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-
-            function updateUI() {
-                console.log("In upadte uni");
-
-                $.ajax({
-                    url: "fetchGameState.php",
-                    type: "GET",
-                    dataType: "json",
-                    success: function (data) {
-                        console.log(data);
-                        const playerHand = $(".player-hand");
-                        playerHand.empty();
-                        console.log(data.cardColors);
-                        $.each(data.cards, function (index, card) {
-                            const cardElement = $("<div></div>")
-                                .addClass("card")
-                                .addClass("player-card")
-                                .addClass(data.cardColors[index])
-                                .addClass(data.canPlay ? "clickable" : "")
-                                .text(card)
-                                .click(() => {
-                                    if (data.canPlay) {
-                                        console.log(card, index);
-                                        playCard(card, index);
-                                    }
-                                });
-                            playerHand.append(cardElement);
-                        });
-                        if (!data.canPlay) {
-                            alert("You have to draw a card")
-                        }
-                        if (data.canPlay) {
-                            alert("You Can play")
-                        }
-                        $("#card-pile").text(data.cardPile);
-                        $("#card-pile").addClass(data.cardPileColor);
-                        $("#player-name").text(data.playerName);
-                    },
-                    error: function () {
-                        console.log("Error occurred while updating player cards.");
-                    }
-                });
-
-
-
-            }
-            //card === "Wild"||
-
-            // Function to simulate playing a card
-            function playCard(card, index) {
-                var Wild;
-         
-                console.log(card);
-                if (card =="Wild" || card =="DrawFourWild") {
-                   
-                    
-                    Wild = true;
-                    var colorDropdown = document.createElement("select")
-                    var colors = ["Red", "Blue", "Green", "Yellow"];
-                    for (var i = 0; i < colors.length; i++) {
-                        var option = document.createElement("option");
-                        option.value = colors[i];
-                        option.setAttribute("class", colors[i]);
-                        option.text = colors[i];
-                        colorDropdown.appendChild(option);
-                    }
-                    console.log("Container tou ban gaya hai");
-                    var container = document.getElementById("color-dropdown-container")
-                    $("#color-dropdown-container").show();
-                  
-                    container.innerHTML = "";
-                    container.appendChild(colorDropdown);
-
-                }
-                if (Wild == true) {
-                    console.log("Condition true")
-                    colorDropdown.addEventListener("change", function () {
-                        selectedColor = this.value;
-                        console.log("Selected color:", selectedColor);
-                        console.log("Played card:", card, index);
-                        $.ajax({
-                            url: 'playCard.php',
-                            type: "POST",
-                            data: { "index": index, "color": selectedColor },
-                            success: function (data) {
-                                if (data) {
-                                    alert(data);
-                                    updateUI();
-                                }
-                            },
-                            error: function () {
-                                console.log("Unexpected error");
-                            }
-
-                        })
-                        $("#color-dropdown-container").hide();
-                    })
-
-                }
-                else {
-                    //ab yeh wala chalaay ga
-                    console.log("Play Card function ");
-
-                    $.ajax({
-                        url: 'playCard.php',
-                        type: "POST",
-                        data: { "index": index },
-                        success: function (data) {
-                            if (data) {
-                                alert(data);
-                                updateUI();
-                            }
-                        },
-                        error: function () {
-                            console.log("Unexpected error");
-                        }
-
-                    });
-                }
-
-
-
-
-            }
-
-
-            // Initial update of the UI
-            updateUI();
-        });
+       
     </script>
 </body>
 

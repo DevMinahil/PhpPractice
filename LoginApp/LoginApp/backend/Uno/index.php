@@ -89,7 +89,8 @@ class Game
 
     public function viewInHandCards($id)
     {
-        return $this->players[$id]->getCards();
+       return $this->players[$id]->getCards();
+      
     }
 
     public function canPlay($id)
@@ -114,6 +115,10 @@ class Game
             if ($this->currentColor == $this->deck->cardColor($card)) {
                 return true;
             }
+            if($this->deck->typeOfAction($card)==$this->deck->typeOfAction($firstCard))
+            {
+                return true;
+            }
         }
 
         return false;
@@ -124,7 +129,6 @@ class Game
         $firstCard = $this->getCardPile();
         $cards = $this->players[$id]->getCards();
         $card = $cards[$cardIndex];
-        echo json_encode($this->currentColor);
 
         if ($this->deck->typeOfCard($card) == 'number') {
             if ($this->deck->cardNumber($card) == $this->deck->cardNumber($firstCard)) {
@@ -146,6 +150,11 @@ class Game
         if ($this->currentColor === $this->deck->cardColor($card)) {
 
             return true;
+        }
+        if($this->typeOfAction($card)==$this->typeOfAction($firstCard))
+        {
+            return true;
+            
         }
         return false;
     }

@@ -1,56 +1,122 @@
-
-$(document).ready(function() {
-const gameState = {
-    playerName: "Player 1",
-    player2Name: "Player 2",
-    topCard: "4",
-    playerHand: ["2", "6", "8", "Skip", "Wild"],
-    player2Hand: ["1", "3", "5", "Skip", "Reverse"],
-    message: ""
-  };
+$(document).ready(function () {
 
   function updateUI() {
-    document.getElementById("player-name").textContent = gameState.playerName;
-    document.getElementById("top-card").textContent = gameState.topCard;
 
-    const playerHand = document.getElementsByClassName("player-hand")[0];
-    playerHand.innerHTML = "";
-    gameState.playerHand.forEach(card => {
-      const cardElement = document.createElement("div");
-      cardElement.classList.add("card");
-      cardElement.classList.add("player-card");
-      cardElement.textContent = card;
-      cardElement.onclick = () => playCard(card);
-      playerHand.appendChild(cardElement);
+    $.ajax({
+      url: "fetchGameState.php",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        console.log(data);
+        const playerHand = $(".player-hand");
+        playerHand.empty();
+     
+        $.each(data.cards, function (index, card) {
+          const cardElement = $("<div></div>")
+            .addClass("card")
+            .addClass("player-card")
+            .addClass(data.cardColors[index])
+            .addClass(data.canPlay ? "clickable" : "")
+            .text(card)
+            .click(() => {
+              if (data.canPlay) {
+                
+                playCard(card, index);
+              }
+            });
+          playerHand.append(cardElement);
+        });
+        if (!data.canPlay) {
+          drawCard();
+          updateUI();
+
+        }
+        $("#card-pile").text(data.cardPile);
+        //console.log("Card pile color is "+data.cardPileColor);
+        $("#card-pile").removeClass().addClass(data.cardPileColor);
+
+        $("#player-name").text(data.playerName);
+      },
+      error: function () {
+        console.log("Error occurred while updating player cards.");
+      }
     });
 
-    const player2Hand = document.getElementsByClassName("player2-hand")[0];
-    player2Hand.innerHTML = "";
-    gameState.player2Hand.forEach(card => {
-      const cardElement = document.createElement("div");
-      cardElement.classList.add("card");
-      cardElement.classList.add("player2-card");
-      cardElement.textContent = card;
-      player2Hand.appendChild(cardElement);
-    });
 
-    document.getElementById("message").textContent = gameState.message;
+
   }
-
-  // Function to simulate playing a card
-  function playCard(card) {
-    gameState.message = `Played card: ${card}`;
-    updateUI();
-  }
-
-  // Function to simulate drawing a card
   function drawCard() {
-    const newCard = "3"; // Sample drawn card
-    gameState.playerHand.push(newCard);
-    gameState.message = `You drew card: ${newCard}`;
-    updateUI();
+    $.ajax({
+      url: "drawCard.php",
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        alert(data);
+      }
+    })
   }
+  function playCard(card, index) {
+    var Wild;
+    if (card == "Wild" || card == "DrawFourWild") {
+      Wild = true;
+      var colorDropdown = document.createElement("select")
+      var colors = ["Red", "Blue", "Green", "Yellow"];
+      for (var i = 0; i < colors.length; i++) {
+        var option = document.createElement("option");
+        option.value = colors[i];
+        option.setAttribute("class", colors[i]);
+        option.text = colors[i];
+        colorDropdown.appendChild(option);
+      }
+      var container = document.getElementById("color-dropdown-container")
+      $("#color-dropdown-container").show();
 
-  // Initial update of the UI
+      container.innerHTML = "";
+      container.appendChild(colorDropdown);
+
+    }
+    if (Wild === true) {
+      console.log("Condition true")
+      colorDropdown.addEventListener("change", function () {
+        selectedColor = this.value;
+        console.log("Selected color:", selectedColor);
+        console.log("Played card:", card, index);
+        $.ajax({
+          url: 'playCard.php',
+          type: "POST",
+          data: { "index": index, "color": selectedColor },
+          success: function (data) {
+            if (data) {
+              $("#color-dropdown-container").prop("disabled", true).val(data.color);
+              updateUI();
+            
+            }
+          },
+          error: function () {
+            console.log("Unexpected error");
+          }
+
+        })
+
+
+      })
+
+    }
+    else {
+      $.ajax({
+        url: 'playCard.php',
+        type: "POST",
+        data: { "index": index },
+        success: function (data) {
+          if (data) {
+            updateUI();
+          }
+        },
+        error: function () {
+          console.log("Unexpected error");
+        }
+      });
+    }
+  }
   updateUI();
-})
+});
