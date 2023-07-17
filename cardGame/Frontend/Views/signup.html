@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Using Cookie with Logout</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link href="../Styles/signup.css" rel="stylesheet">
+
+    <script src="../Scripts/validations.js"></script>
+    <script src="../ErrorsModals/signupErrors.js"></script>
+    <script src="./changePassword.php.js"></script>
+
+
+
+</head>
+
+<body id="LoginForm">
+
+    <div class="container">
+        <div id="errorModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="errorMessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="login-form">
+                    <div class="panel">
+                        <h2>Sign Up Form</h2>
+                    </div>
+                    <form id="signupForm" method="POST" action="../../Backend/Controllers/UserControllers/signup.php">
+                        <div class="form-group">
+                            <input type="text" value="" name="name" class="form-control" id="inputName"
+                                placeholder="Name" required>
+                            <div class="invalid-feedback" id="nameError"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" value="" name="email" class="form-control" id="inputEmail"
+                                placeholder="Email" required>
+                            <div class="invalid-feedback" id="emailError"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" class="form-control" placeholder="0300-0000000"
+                                pattern="^\d{4}-\d{7}$" required>
+                            <small class="text-muted">Please enter in the format 0300-0000000</small>
+                            <div class="invalid-feedback" id="phoneError"></div>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" value="" name="password" class="form-control" id="inputPassword"
+                                placeholder="Password" required>
+
+                            <small class="text-muted">Password must be at least 8 characters long and contain at least
+                                one uppercase letter, one lowercase letter, one digit, and one special character</small>
+                            <br>
+                            <small class="Weak" id="passwordStrength"></small>
+
+
+                        </div>
+                        <div class="form-group">
+                            <input type="password" value="" name="confirm_password" class="form-control"
+                                id="inputConfirmPassword" placeholder="Confirm Password" required>
+                            <div class="invalid-feedback" id="confirmPasswordError"></div>
+                        </div>
+                       
+                        <div class="form-group" style="text-align:left;">
+                            <label><input type="checkbox" name="showPassword" id="showPassword"> Show password</label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="isAdminCheckbox"
+                                    name="isAdminCheckbox">
+                                <label class="custom-control-label" for="isAdminCheckbox">Sign up As Admin</label>
+                            </div>
+                        </div>
+
+                        <input type="submit" class="btn btn-primary custom-class" value="Sign Up" name="login">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

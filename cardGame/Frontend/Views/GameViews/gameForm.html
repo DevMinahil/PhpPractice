@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>UNO Game</title>
+  <link rel="stylesheet" href="../../Styles/game.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../../Scripts/credentials.js"></script>
+
+</head>
+<style>
+
+ 
+</style>
+<body>
+
+<div class="form-container" id="player-number-form">
+  <div class="form-content">
+    <form id="number-of-players-form" onsubmit="">
+      <label for="noOfPlayers"><b>Enter the number of players:</b></label>
+      <select id="noOfPlayers" name="noOfPlayers" required>
+        <option value="">Select</option>
+        <option value="2">2 Players</option>
+        <option value="3">3 Players</option>
+        <option value="4">4 Players</option>
+        <option value="5">5 Players</option>
+      </select>
+      <button class="btn" id="NoOfPlayersButton">Next</button>
+    </form>
+  </div>
+</div>
+
+
+<div class="form-container" id="player-names-form" style="display: none;">
+  <div class="form-content">
+    <form id="player-names-submission-form" onsubmit="">
+      <div id="player-names-fields-container"></div>
+      <button  class="btn" id="StartGame">Start Game</button>
+    </form>
+  </div>
+</div>
+
+
+
+ 
+</body>
+</html>
