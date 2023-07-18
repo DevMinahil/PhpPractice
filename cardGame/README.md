@@ -18,14 +18,17 @@ A uno game developed using php as backend for purpose of practicing php basics
 
 - Inside the "Users" database, create a table named "users" with the following attributes:
 - Inside the "Users" database, create a table named "users" with the following attributes:
-| Column   | Type         | Collation           | Null | Default | Extra          |
-|----------|--------------|---------------------|------|---------|----------------|
-| id       | int          |                     |      |         | AUTO_INCREMENT |
-| name     | varchar(255) | utf8mb4_0900_ai_ci  |      |         |                |
+
+| Column  | Type  | Collation  | null | Default | Extra 
+| ------------- | ------------- | ------------- |------------- |------------- |------------- |
+| id  | int |                    | |             | AUTO_INCREMENT 
+varchar(255) | utf8mb4_0900_ai_ci  |      |         |                |
 | email    | varchar(255) | utf8mb4_0900_ai_ci  |      |         |                |
 | phone    | varchar(20)  | utf8mb4_0900_ai_ci  |      |         |                |
 | password | varchar(255) | utf8mb4_0900_ai_ci  |      |         |                |
 | IsAdmin  | tinyint(1)   |                     |      |         |                |
+
+
 			
 ## Deployment:
 - Install PHP version 8.1 on your system.
