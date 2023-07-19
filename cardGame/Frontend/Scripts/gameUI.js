@@ -1,13 +1,10 @@
 $(document).ready(function () {
-
   function updateUI() {
-
     $.ajax({
       url: "/Backend/Controllers/GameControllers/fetchGameState.php",
       type: "GET",
       dataType: "json",
       success: function (data) {
-        console.log(data);
         const playerHand = $(".player-hand");
         playerHand.empty();
      
@@ -28,9 +25,7 @@ $(document).ready(function () {
         });
         if (!data.canPlay) {
           alert("You cannot play you have to draw a card!");
-          drawCard();
-          updateUI();
-
+          $("#draw-button").prop("disabled", false);
         }
         $("#card-pile").text(data.cardPile);
         //console.log("Card pile color is "+data.cardPileColor);
@@ -42,20 +37,27 @@ $(document).ready(function () {
         console.log("Error occurred while updating player cards.");
       }
     });
-
-
-
   }
-  function drawCard() {
+  $("#draw-button").click(function () {
+    console.log("Button is clicked !");
+    //Disabling button again
+    $("#draw-button").prop("disabled", true);
     $.ajax({
       url: "/Backend/Controllers/GameControllers/drawCard.php",
       type: "GET",
       dataType: "json",
       success: function (data) {
-        alert(data);
+       alert(data);
+    
+      },
+      error: function (error) {
+        console.log(error);
       }
-    })
-  }
+  
+    });
+    updateUI();
+
+  });
   function playCard(card, index) {
     var Wild;
     if (card == "Wild" || card == "DrawFourWild") {
@@ -71,10 +73,8 @@ $(document).ready(function () {
       }
       var container = document.getElementById("color-dropdown-container")
       $("#color-dropdown-container").show();
-
       container.innerHTML = "";
       container.appendChild(colorDropdown);
-
     }
     if (Wild === true) {
       Wild=false;
@@ -89,20 +89,22 @@ $(document).ready(function () {
           success: function (data) {
             if (data) {
               alert(data);
+              if (data.includes("Congratulations")) {
+                console.log("Congratulations message found in the response.");
+                alert(data);
+                window.location.href="/Frontend/Views/GameViews/gameForm.html";
+            } else {    
               $("#color-dropdown-container").prop("disabled", true).val(data.color);
               updateUI();
+            }
             
             }
           },
           error: function () {
             console.log("Unexpected error");
           }
-
         })
-
-
       })
-
     }
     else {
       $.ajax({
@@ -112,7 +114,15 @@ $(document).ready(function () {
         success: function (data) {
           if (data) { 
             alert(data);
-            updateUI();
+            if (data.includes("Congratulations,")) {
+              console.log("Congratulations message found in the response.");
+              alert(data);
+              window.location.href="/Frontend/Views/GameViews/gameForm.html";
+
+           } else {
+            
+              updateUI();
+          }      
           }
         },
         error: function () {

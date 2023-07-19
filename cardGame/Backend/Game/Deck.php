@@ -23,17 +23,6 @@ class Deck
     // 8 Reverse cards – two cards of each color.
     // 8 Draw cards – two cards of each color.
     // 8 Black cards – 4 wild cards and 4 Wild Draw 4 cards.
-    public function setColor(string $color)
-    {
-        $this->currentColor=$color;
-
-    }
-    public function getColor()
-    {
-        return $this->currentColor;
-
-    }
-
     public function generateDeck()
     {
         foreach ($this->numbers as $number) {
@@ -59,13 +48,20 @@ class Deck
     //This function will draw specified number of cards from the deck
     //this can be used for draw two draw four and assigning each player his/her cards
     public function drawCards(int $number)
-    {
-        $playerCards = array_slice($this->cards, 0, $number);
-
-        // remove fisrt 7 cards from the decks
-        array_splice($this->cards, 0, $number);
-
-        return $playerCards;
+    {// if deck have enough cards to draw or not
+        if(count($this->cards)>$number) {
+            $playerCards = array_slice($this->cards, 0, $number);
+            array_splice($this->cards, 0, $number);
+            return $playerCards;
+        } 
+        else {
+            return 0;
+        }
+    }
+    public function AddCards($card)
+    {   
+        array_push($this->cards, $card);
+        shuffle($this->cards);
     }
 
     //this will shuffle the cards
@@ -74,22 +70,10 @@ class Deck
         shuffle($this->cards);
     }
     //this will return an array of remaining cards in the deck
-    public function returnCards()
-    {
-        return $this->cards;
-    }
-    //this function will return the remaining number of cards in integers
-    public function remainingCards()
-    {
-        return sizeof($this->cards); //
-
-    }
-    // this function will take card as string as input and return its number OR action
     public function cardNumber($card)
     {
         $number = explode(" ", $card);
-
-        if(intval($number[0])) {
+        if (intval($number[0])) {
             return intval($number[0]);
         } else {
 
@@ -97,65 +81,54 @@ class Deck
         }
 
     }
+    public function remainingCards()
+    {
+        return sizeof($this->cards); //
+
+    }
+    public function insertCard($card)
+    {
+        $this->cards[$this->remainingCards()]=$card;
+    }
     // return the type of card can be action or number
     public function typeOfCard($card)
     {
         $number = explode(" ", $card);
-
-
-
-        if(intval($number[0])||$number[0]==="0") {
+        if (intval($number[0]) || $number[0] === "0") {
             return "number";
         } else {
             return "action";
         }
-
     }
     public function typeOfAction($card)
     {
         $number = explode(" ", $card);
         return $number[0];
-
     }
     // it will be used to insert card at the ending of the deck
-    public function insertCard($card)
-    {
-        //print("Inserting element at the end of deck :");
-        $this->cards[$this->remainingCards()]=$card;
-        //print("After inserting the value of deck card is :");
-        //print_r($this->cards);
-
-
-    }
     // return color of the card if applicable other wise return zero
     public function cardColor($card)
     {
         $number = explode(" ", $card);
-        if(sizeof($number)>3) {
+        if (sizeof($number) > 3) {
             return $number[2];
         }
 
-        if(sizeof($number)==3) {
+        if (sizeof($number) == 3) {
             // print_r($number);
 
-            if($number[2]!='') {
-
-
-
-
-                return($number[2]);
+            if ($number[2] != '') {
+                return ($number[2]);
             } else {
-
                 return ($number[1]);
             }
-
         }
-        if(sizeof($number)==2) {
+        if (sizeof($number) == 2) {
             return $number[1];
         }
         // the card is wild
 
-        if(sizeof($number)==1) {
+        if (sizeof($number) == 1) {
 
             return "Wild";
         }

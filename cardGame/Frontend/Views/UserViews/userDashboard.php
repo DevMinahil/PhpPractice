@@ -22,22 +22,21 @@
 
 </style>
 
-<body style="background-image: url('../images/UNO_Logo.svg');">
-<?php
-session_start();
-if(isset($_SESSION['game']))
-{
-    unset($_SESSION['game']);
-    unset($_SESSION['turn']);
-}
+<body style="background-image: url('/Frontend/Images/UNO_Logo.svg');">
+    <?php
+    session_start();
+    if (isset($_SESSION['game'])) {
+        unset($_SESSION['game']);
+        unset($_SESSION['turn']);
+    }
 
-?>
+    ?>
 
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   
- 
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -67,7 +66,8 @@ if(isset($_SESSION['game']))
             </li> -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="../../../Backend/Controllers/UserControllers/logout.php">Logout<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="../../../Backend/Controllers/UserControllers/logout.php">Logout<span
+                            class="sr-only">(current)</span></a>
 
                 </li>
                 <ul>
@@ -105,11 +105,12 @@ if(isset($_SESSION['game']))
         </div>
     </div>
     <div class="container">
-
         <div class="btn-group-vertical text-center">
-            <button class="btn btn-secondary-lg custom_button">
-                <a href="../GameViews/gameForm.html">Play</a>
+            <button class="btn btn-secondary-lg custom_button"
+                onclick="window.location.href='../GameViews/gameForm.html'">
+                Play
             </button>
+
 
             <button type="button" class="btn btn-secondary-lg custom_button">Rules</button>
         </div>

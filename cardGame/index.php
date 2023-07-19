@@ -13,13 +13,13 @@
 
 
 // if (isset($_SESSION['id'])&& $_SESSION['IsAdmin']){
-   
+
 //     header('Location: ../adminDashboard.php') ;
 // }
 // elseif(isset($_SESSION['id']) &&!isset($_SESSION['IsAdmin']))
 // {
 //   header('Location: ../userDashboard.php');
-    
+
 // }
 
 ?> -->

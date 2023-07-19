@@ -5,6 +5,7 @@ body {
     height: 100vh;
     background-color: #f3f3f3;
     font-family: Arial, sans-serif;
+    background-image: url('Frontend/Images/UNO_Logo.svg');
   }
 
   .container {
@@ -141,13 +142,15 @@ body {
   .form-container {
     display: none;
     position: justified;
-
+  
     z-index: 1;
     left: 0;
     top: 0;
     width: 30%;
-    height: 50%;
-    overflow: auto;
+    height: 39%;
+    margin-left: 28%;
+    margin-top: 13%
+  
    
   }
 
@@ -157,7 +160,7 @@ body {
     padding: 20px;
     border: 1px solid #888;
     
-    width: 80%;
+    width: 108%;
   }
 
   .form-container input[type="number"] {
@@ -181,6 +184,7 @@ body {
     cursor: pointer;
     width: 25%;
     margin-bottom: 10px;
+    height: 47px;
     margin-top: 20px
   }
 
@@ -209,5 +213,15 @@ body {
   .player-name-field input[type="text"] {
     padding: 5px;
     width: 200px;
+  }
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .form-content {
+    text-align: center;
   }
   

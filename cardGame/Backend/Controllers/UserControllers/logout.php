@@ -6,7 +6,6 @@ if(isset($_SESSION['IsAdmin'])) {
 
     unset($_SESSION["IsAdmin"]);
 
-
 }
 
 header('Location: ../../../index.php');

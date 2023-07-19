@@ -41,7 +41,7 @@ if (!isset($_SESSION['game'])) {
             //wining condition
             if ($game->getNoOfCards($turn) == 0) {
                 echo json_encode("Congratulations, " . $game->getPlayer($turn)->getName() . " has won the game!");
-                header('../../../Frontend/Views/UserViews/userDashboard.php');
+    
                 exit();
 
             }
@@ -64,7 +64,7 @@ if (!isset($_SESSION['game'])) {
                 }
                 if ($game->typeOfAction($card) == 'Reverse') {
                     $game->setDirection(($game->getDirection())*-1);
-                    echo $game->getDirection();
+                  
                     $turn2 = $turn + $game->getDirection();
                     if ($turn2 == $game->getNumOfPlayers()) {
                         $turn2 = 0;
@@ -78,27 +78,27 @@ if (!isset($_SESSION['game'])) {
 
 
                     $turn = $turn + $game->getDirection();
-                    if ($turn == $noOfPlayers) {
+                    if ($turn == $game->getNumOfPlayers()) {
                         $turn = 0;
                     } elseif ($turn < 0) {
-                        $turn = $noOfPlayers - 1;
+                        $turn = $game->getNumOfPlayers()- 1;
                     }
 
                     echo json_encode($game->getPlayer($turn)->getName() . "Turn is skipped ");
                 } elseif ($game->typeOfAction($card) == 'Draw') {
 
                     $drawnCards = $game->drawFromDeck(2);
-                    $game->getPlayer($turn)->addCards($drawnCards);
+    
                     $DrawTwoPlayer = $turn + $game->getDirection();
-                    if ($DrawTwoPlayer == $noOfPlayers) {
+                    if ($DrawTwoPlayer == $game->getNumOfPlayers()) {
                         $DrawTwoPlayer = 0;
                     } elseif ($DrawTwoPlayer < 0) {
-                        $DrawTwoPlayer = $noOfPlayers - 1;
+                        $DrawTwoPlayer = $game->getNumOfPlayers() - 1;
                     }
                     $game->getPlayer($DrawTwoPlayer)->addCards($drawnCards);
                     echo json_encode("Draw Two card is played. Cards are added in ".$game->getPlayer($DrawTwoPlayer)->getName());
                 } elseif ($game->typeOfAction($card) == 'DrawFourWild') {
-                    echo json_encode("Draw four wild ki if condition true hai ");
+                
                     if (!isset($_POST['color'])) {
                         echo json_encode("Select the color first");
                         exit();
@@ -109,10 +109,10 @@ if (!isset($_SESSION['game'])) {
                         $game->setCurrentColor($color);
                         $drawnCards = $game->drawFromDeck(4);
                         $DrawFourPlayer = $turn + $game->getDirection();
-                        if ($DrawFourPlayer == $noOfPlayers) {
+                        if ($DrawFourPlayer == $game->getNumOfPlayers()) {
                             $DrawFourPlayer = 0;
                         } elseif ($DrawFourPlayer < 0) {
-                            $DrawFourPlayer = $noOfPlayers - 1;
+                            $DrawFourPlayer = $game->getNumOfPlayers() - 1;
                         }
                         $game->getPlayer($DrawFourPlayer)->addCards($drawnCards);
                         json_encode("DrawFourWild Card has been added to ". $game->getPlayer($DrawFourPlayer)->getName()." Cards :");
@@ -143,7 +143,3 @@ if (!isset($_SESSION['game'])) {
 
     }
 }
-
-
-
-// }
