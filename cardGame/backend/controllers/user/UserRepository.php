@@ -1,7 +1,7 @@
 
 
 <?php
-include('../../models/userModel.php');
+include('../../models/user.php');
 include('../../config/connection.php');
 include('user.php');
 
