@@ -2,12 +2,12 @@
 <html>
 <head>
 <title>Uno Game</title>
-<link href="./Frontend/Styles/index.css" rel="stylesheet">
+<link href="./frontend/styles/index.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="./Frontend/Scripts/index.js"></script> 
-<script src="./Frontend/Scripts/showPassword"></script>
+<script src="./frontend/scripts"></script> 
+<script src="./frontend/scripts/showPassword.js"></script>
 <!-- <?php
 //session_start();
 
@@ -70,7 +70,7 @@
             <h2>Admin Login</h2>
             <p>Please enter your username and password</p>
         </div>
-        <form id="Login" method="POST" action="./Backend/Controllers/UserControllers/login.php">
+        <form id="Login" method="POST" action="../backend/controllers/user/Login.php">
             <div class="form-group">
                 <input type="text" name="email" class="form-control" id="inputEmail" placeholder="Email Address">
             </div>

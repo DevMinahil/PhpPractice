@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>UNO Game</title>
+  <link rel="stylesheet" href="../../styles/game.css">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../../scripts/credentials.js"></script>
+  <link rel="stylesheet" href="../../styles/user.css">
+  <link rel="stylesheet" href="../../styles/admin.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+
+<body style="background-image: url('/frontend/images/UNO_Logo.svg');">
+  <div class="nav-container">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f0ad4e;">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active mr-5 ml-5">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active mr-5 ml-5">
+                    <a class="nav-link" href="#">About <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active mr-5 ml-5">
+                    <a class="nav-link" href="#">Contact Us<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../../../Backend/controllers/user/Logout.php">Logout<span
+                            class="sr-only">(current)</span></a>
+
+                </li>
+                <ul>
+                    <div class="dropdown">
+                        <button class="dropbtn"><i class="fa fa-cog"></i></button>
+                        <div class="dropdown-content">
+                            <a href="../changePassword.php">Change Password</a>
+
+                        </div>
+                    </div>
+
+                </ul>
+            </ul>
+        </div>
+    </nav>
+</div>
+  <div class="form-container" id="player-number-form">
+    <div class="form-content">
+      <form id="number-of-players-form" onsubmit="">
+        <label for="noOfPlayers"><b>Enter the number of players:</b></label>
+        <select id="noOfPlayers" name="noOfPlayers" required>
+          <option value="2">2 Players</option>
+          <option value="3">3 Players</option>
+          <option value="4">4 Players</option>
+          <option value="5">5 Players</option>
+        </select>
+        <button class="btn" id="NoOfPlayersButton">Next</button>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="form-container" id="player-names-form" style="display: none;">
+    <div class="form-content">
+      <form id="player-names-submission-form" onsubmit="">
+        <div id="player-names-fields-container"></div>
+        <button class="btn" id="StartGame">Start Game</button>
+      </form>
+    </div>
+  </div>
+
+
+
+
+</body>
+
+</html>
