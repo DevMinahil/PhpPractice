@@ -221,6 +221,20 @@ body {
     height: 100vh;
   }
   
+.active-button {
+ 
+  background-color: #4caf50; 
+  color: white; 
+}
+
+
+.disabled-button {
+  
+  background-color: #ccc; 
+  color: #888;
+  cursor: not-allowed; 
+}
+
   .form-content {
     text-align: center;
   }

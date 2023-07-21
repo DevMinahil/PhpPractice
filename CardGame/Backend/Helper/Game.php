@@ -45,11 +45,14 @@ class Game
         if (self::$instance === null) {
             self::$instance = new Game($direction, $numOfPlayers, $name);
         }
-
         return self::$instance;
     }  public function getNumOfPlayers(): int
     {
         return $this->numOfPlayers;
+    }
+    public function addCardInPlayerHand($id,$cards)
+    {
+        $this->players[$id]->addCards($cards);
     }
 
     public function getDeck()
@@ -192,5 +195,9 @@ class Game
     public function removePlayerCard($id, $card)
     {
         return $this->players[$id]->removeCard($card);
+    }
+    public function getPlayerName($id)
+    {
+        return $this->players[$id]->getName();
     }
 }

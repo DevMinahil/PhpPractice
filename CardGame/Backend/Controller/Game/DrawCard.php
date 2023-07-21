@@ -1,5 +1,4 @@
 <?php
-
 require_once('../../routes.php');
 require_once($deckPath);
 require_once($playerPath);
@@ -15,5 +14,5 @@ if ($turn >= $game->getNumOfPlayers()) {
 } elseif ($turn < 0) {
     $turn = $game->getNumOfPlayers() - 1;
 }
-echo json_encode("The draw card is " . $drawnCard);
 $_SESSION['turn'] = $turn;
+echo json_encode("The draw card is ".$drawnCard[0]);

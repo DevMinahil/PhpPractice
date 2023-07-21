@@ -9,131 +9,144 @@ class PlayTurn
     private Game $game;
     private $color;
     private $card;
+    private $playerName;
+
     function __construct($turn, $cardIndex, &$game, $color = null)
     {
         $this->turn = $turn;
         $this->cardIndex = $cardIndex;
         $this->game = $game;
-        $this->color=$color;
-        $this->card=$this->game->getPlayer($this->turn)->getCards()[$this->cardIndex];
-        if (!$this->IsCardValid()) {
-            $response = ['error' => 'error! Invalid Car'];
+        $this->color = $color;
+        $this->card = $this->game->getPlayer($this->turn)->getCards()[$this->cardIndex];
+        $this->playerName = $this->game->getPlayerName($turn);
+
+        if (!$this->isCardValid()) {
+            $response = ['error' => 'error! Invalid Card'];
             echo json_encode($response);
             return;
         }
-        $this->PlayCard();
-        if ($this->IsWinner()) {
-            echo json_encode("Congratulations, " . $this->game->getPlayer($this->cardIndex)->getName() . " has won the game!");
+        $this->playCard();
+        if ($this->isWinner()) {
+            echo json_encode("Congratulations, " . $this->playerName . " has won the game!");
             return;
         }
-        if ($this->IsActionCardPlayed()) {
-
-            if ($this->takeAction() == 0){
+        if ($this->isActionCardPlayed()) {
+            if ($this->takeAction() == 0) {
                 return;
             }
         }
-         $this->turn = $this->UpdateTurn();
+        $this->turn = $this->updateTurn();
     }
+
     // Getter methods
     public function getTurn()
     {
         return $this->turn;
     }
-    function IsCardValid()
+
+    function isCardValid()
     {
         if (!$this->game->validCard($this->turn, $this->cardIndex)) {
             return 0;
         }
         return 1;
     }
-    function PlayCard()
+
+    function playCard()
     {
         $this->game->setCurrentColor(null);
         $this->game->removePlayerCard($this->turn, $this->card);
         $this->game->setCardPile($this->card);
         echo json_encode($this->card);
     }
-    function IsWinner()
+
+    function isWinner()
     {
         if ($this->game->getNoOfCards($this->turn) == 0) {
-            echo json_encode("Congratulations, " . $this->game->getPlayer($this->cardIndex)->getName() . " has won the game!");
+            echo json_encode("Congratulations, " .  $this->playerName . " has won the game!");
             return true;
         }
     }
+
     function wildCard()
     {
         if ($this->color == null) {
             return 0;
         }
         $this->game->setCurrentColor($this->color);
-        echo json_encode("Now the current color is :" . $this->game->getCurrentColor());
+        echo json_encode("Now the current color is: " . $this->game->getCurrentColor());
         return 1;
     }
+
     function reverseCard()
     {
         $this->game->setDirection(($this->game->getDirection()) * -1);
-        echo json_encode("Rerverse card is played :");
+        echo json_encode("Reverse card is played.");
         return 1;
     }
+
     function skipCard()
     {
-        $this->turn = $this->UpdateTurn();
-        echo json_encode($this->game->getPlayer($this->turn)->getName() . "Turn is skipped ");
+        $this->turn = $this->updateTurn();
+        echo json_encode($this->game->getPlayerName($this->turn) . "'s turn is skipped.");
         return 1;
     }
+
     function drawTwo()
     {
         $drawnCards = $this->game->drawFromDeck(2);
-        $DrawTwoPlayer = $this->UpdateTurn();
-        $this->game->getPlayer($DrawTwoPlayer)->addCards($drawnCards);
-        echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayer($DrawTwoPlayer)->getName());
+        $drawTwoPlayer = $this->updateTurn();
+        $this->game->getPlayer($drawTwoPlayer)->addCards($drawnCards);
+        echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayerName($drawTwoPlayer));
         return 1;
     }
+
     function drawFour()
     {
         if ($this->color == null) {
             return 0;
         }
         $drawnCards = $this->game->drawFromDeck(4);
-        $DrawFourPlayer = $this->UpdateTurn();
-        $this->game->getPlayer($DrawFourPlayer)->addCards($drawnCards);
+        $drawFourPlayer = $this->updateTurn();
+        $this->game->addCardInPlayerHand($drawFourPlayer, $drawnCards);
         $this->game->setCurrentColor($this->color);
-        echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayer($DrawFourPlayer)->getName());
+        echo json_encode("Draw Four card is played. Cards are added in " . $this->game->getPlayerName($drawFourPlayer));
         return 1;
     }
-    function UpdateTurn()
+
+    function updateTurn()
     {
         $turn = $this->turn + $this->game->getDirection();
-        if ($turn == $this->game->getNumOfPlayers()) {
+        $numOfPlayers = $this->game->getNumOfPlayers();
+
+        if ($turn == $numOfPlayers) {
             $turn = 0;
         } elseif ($turn < 0) {
-            $turn = $this->game->getNumOfPlayers() - 1;
+            $turn = $numOfPlayers - 1;
         }
         return $turn;
     }
-    function IsActionCardPlayed()
+
+    function isActionCardPlayed()
     {
-        
         if ($this->game->deck->typeOfCard($this->card) === "number") {
             return 0;
         }
         return 1;
     }
+
     function takeAction()
     {
-
         if ($this->game->typeOfAction($this->card) == "Wild") {
-            $result=$this->wildCard();
+            $result = $this->wildCard();
         } elseif ($this->game->typeOfAction($this->card) == 'Reverse') {
-            $result= $this->reverseCard();
+            $result = $this->reverseCard();
         } elseif ($this->game->typeOfAction($this->card) == 'Skip') {
-            $result= $this->skipCard();
-        }
-        //draw 2 card
-        elseif ($this->game->typeOfAction($this->card) == 'Draw') {
-            $result=  $this->drawTwo();
+            $result = $this->skipCard();
+        } elseif ($this->game->typeOfAction($this->card) == 'Draw') {
+            $result =  $this->drawTwo();
         } elseif ($this->game->typeOfAction($this->card) == 'DrawFourWild') {
-            $result= $this->drawFour();
+            $result = $this->drawFour();
         }
         return $result;
     }

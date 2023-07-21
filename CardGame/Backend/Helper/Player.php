@@ -44,6 +44,6 @@ class Player
     public function addCards(array $newCards)
     {
         $this->cards = array_merge($this->cards, $newCards);
-        echo "Added " . count($newCards) . " card(s) to the player's hand.\n";
+     
     }
 }

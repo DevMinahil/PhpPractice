@@ -1,5 +1,8 @@
 $(document).ready(function () {
+  let canPlay=1;
   function updateUI() {
+    $("#draw-button").prop("disabled", true);
+    $("#draw-button").removeClass("active-button").addClass("disabled-button");
     $.ajax({
       url: "/Backend/Controller/Game/GameState.php",
       type: "GET",
@@ -20,6 +23,10 @@ $(document).ready(function () {
                 
                 playCard(card, index);
               }
+              else
+              {
+                canPlay=0;
+              }
             });
           playerHand.append(cardElement);
         });
@@ -30,14 +37,18 @@ $(document).ready(function () {
 
         $("#player-name").text(data.playerName);
         if (!data.canPlay) {
-          alert("You cannot play you have to draw a card!");
-         $("#draw-button").prop("disabled", false);
+       //   alert("You cannot play you have to draw a card!");
+       $("#draw-button").prop("disabled", false);
+       $("#draw-button").removeClass("disabled-button").addClass("active-button");
        }
       },
       error: function () {
         console.log("Error occurred while updating player cards.");
       }
     });
+
+ 
+
   }
   //asking the user weather he want to exit or not
   window.addEventListener('beforeunload', (event) => {
@@ -60,9 +71,18 @@ $(document).ready(function () {
       }
   
     });
-    updateUI();
+     updateUI();
+  
 
   });
+  function drawCardAlert()
+  {
+    if(canPlay==0)
+    {
+      canPlay=1;
+      alert("You cannot play You have to draw a card!")
+    }
+  }
   function playCard(card, index) {
     var Wild;
     console.log(card);
@@ -98,10 +118,11 @@ $(document).ready(function () {
               if (data.includes("Congratulations")) {
                 console.log("Congratulations message found in the response.");
                 alert(data);
-                window.location.href="../../Backend/Controller/Game/gameForm.html";
+                window.location.href="./views/Game/gameForm.html";
             } else {    
               $("#color-dropdown-container").prop("disabled", true).val(data.color);
               updateUI();
+            
             }
             
             }
@@ -128,6 +149,7 @@ $(document).ready(function () {
            } else {
             
               updateUI();
+           
           }      
           }
         },
@@ -138,4 +160,5 @@ $(document).ready(function () {
     }
   }
   updateUI();
+
 });

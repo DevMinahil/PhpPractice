@@ -11,7 +11,6 @@
   <script src="./Frontend/scripts/index.js"></script>
   <script src="../Frontend/scripts/showPassword"></script>
 </head>
-
 <body id="LoginForm">
   <div class="container">
     <h1 class="form-heading"></h1>
