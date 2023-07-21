@@ -48,11 +48,11 @@ $(document).ready(function () {
       type: "POST",
       data: formData,
       success: function (response) {
-        window.location.href = "/Frontend/views/Game/gameUI.html";
+       window.location.href = "/Frontend/views/Game/gameUI.html";
       },
       error: function () {
         console.error(error);
-      },
-    });
+       },
+     });
   });
 });

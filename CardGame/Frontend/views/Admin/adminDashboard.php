@@ -14,17 +14,17 @@
         <link rel="stylesheet" href="../../styles/admin.css">
         <title></title>
     </head>
-<?php
-session_start();
+<!-- <?php
+// session_start();
 //Check if the user ID session variable is set
-if (!isset($_SESSION['id'])) {
-    // Redirect the user to the login page or display an error message
-    header('Location: ../../../index.php');
-    ; // Stop further execution of the script
-} elseif (!isset($_SESSION['IsAdmin'])) {
-    header('Location:../User/userDashboard.php');
-}
-?>
+// if (!isset($_SESSION['id'])) {
+//     // Redirect the user to the login page or display an error message
+//     header('Location: ../../../index.php');
+//     ; // Stop further execution of the script
+// } elseif (!isset($_SESSION['IsAdmin'])) {
+//     header('Location:../User/userDashboard.php');
+// }
+// ?> -->
     <body>
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #f0ad4e;">
             <a class="navbar-brand" href="#">Navbar</a>
@@ -62,7 +62,7 @@ if (!isset($_SESSION['id'])) {
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../../backend/controllers/user/Login.php">
+                        <a class="nav-link" href="../../../Backend/Controller/User/Logout.php">
                             Logout
                             <span class="sr-only">(current)</span>
                         </a>

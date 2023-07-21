@@ -67,16 +67,19 @@ class PlayTurn
         }
         $this->game->setCurrentColor($this->color);
         echo json_encode("Now the current color is :" . $this->game->getCurrentColor());
+        return 1;
     }
     function reverseCard()
     {
         $this->game->setDirection(($this->game->getDirection()) * -1);
         echo json_encode("Rerverse card is played :");
+        return 1;
     }
     function skipCard()
     {
         $this->turn = $this->UpdateTurn();
         echo json_encode($this->game->getPlayer($this->turn)->getName() . "Turn is skipped ");
+        return 1;
     }
     function drawTwo()
     {
@@ -84,6 +87,7 @@ class PlayTurn
         $DrawTwoPlayer = $this->UpdateTurn();
         $this->game->getPlayer($DrawTwoPlayer)->addCards($drawnCards);
         echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayer($DrawTwoPlayer)->getName());
+        return 1;
     }
     function drawFour()
     {
@@ -95,6 +99,7 @@ class PlayTurn
         $this->game->getPlayer($DrawFourPlayer)->addCards($drawnCards);
         $this->game->setCurrentColor($this->color);
         echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayer($DrawFourPlayer)->getName());
+        return 1;
     }
     function UpdateTurn()
     {
@@ -118,17 +123,18 @@ class PlayTurn
     {
 
         if ($this->game->typeOfAction($this->card) == "Wild") {
-            $this->wildCard();
+            $result=$this->wildCard();
         } elseif ($this->game->typeOfAction($this->card) == 'Reverse') {
-            $this->reverseCard();
+            $result= $this->reverseCard();
         } elseif ($this->game->typeOfAction($this->card) == 'Skip') {
-            $this->skipCard();
+            $result= $this->skipCard();
         }
         //draw 2 card
         elseif ($this->game->typeOfAction($this->card) == 'Draw') {
-            $this->drawTwo();
+            $result=  $this->drawTwo();
         } elseif ($this->game->typeOfAction($this->card) == 'DrawFourWild') {
-            $this->drawFour();
+            $result= $this->drawFour();
         }
+        return $result;
     }
 }

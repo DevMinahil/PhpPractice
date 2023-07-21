@@ -1,6 +1,6 @@
 
 <?php
-include('../../Models/User.php');
+include('../../Model/User.php');
 include('../../../Config/connection.php');
 include('User.php');
 class UserRepository implements User

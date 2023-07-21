@@ -23,15 +23,16 @@ $(document).ready(function () {
             });
           playerHand.append(cardElement);
         });
-        if (!data.canPlay) {
-          alert("You cannot play you have to draw a card!");
-          $("#draw-button").prop("disabled", false);
-        }
+       
         $("#card-pile").text(data.cardPile);
         //console.log("Card pile color is "+data.cardPileColor);
         $("#card-pile").removeClass().addClass(data.cardPileColor);
 
         $("#player-name").text(data.playerName);
+        if (!data.canPlay) {
+          alert("You cannot play you have to draw a card!");
+         $("#draw-button").prop("disabled", false);
+       }
       },
       error: function () {
         console.log("Error occurred while updating player cards.");

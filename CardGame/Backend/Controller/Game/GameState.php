@@ -1,4 +1,3 @@
-
 <?php
 require_once('../../routes.php');
 require_once($gamePath);
@@ -25,5 +24,3 @@ $responseData = [
 ];
 
 echo json_encode($responseData);
-
-?>
