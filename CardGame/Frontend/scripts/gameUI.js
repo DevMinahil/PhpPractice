@@ -10,7 +10,6 @@ $(document).ready(function () {
       success: function (data) {
         const playerHand = $(".player-hand");
         playerHand.empty();
-     
         $.each(data.cards, function (index, card) {
           const cardElement = $("<div></div>")
             .addClass("card")
@@ -34,7 +33,6 @@ $(document).ready(function () {
         $("#card-pile").text(data.cardPile);
         //console.log("Card pile color is "+data.cardPileColor);
         $("#card-pile").removeClass().addClass(data.cardPileColor);
-
         $("#player-name").text(data.playerName);
         if (!data.canPlay) {
        //   alert("You cannot play you have to draw a card!");
@@ -46,8 +44,6 @@ $(document).ready(function () {
         console.log("Error occurred while updating player cards.");
       }
     });
-
- 
 
   }
   //asking the user weather he want to exit or not
@@ -75,14 +71,6 @@ $(document).ready(function () {
   
 
   });
-  function drawCardAlert()
-  {
-    if(canPlay==0)
-    {
-      canPlay=1;
-      alert("You cannot play You have to draw a card!")
-    }
-  }
   function playCard(card, index) {
     var Wild;
     console.log(card);
