@@ -12,11 +12,8 @@
                 method: 'POST',
                 data: {ID:employeeId },
                 success: function(response) {
-                    // Update the table body with the received data
-                  
+                  // Update the table body with the received data
                    response=JSON.parse(response);
-                
-
                    console.log("Responce is displyed");
                    $('#inputName').val(response.name);
                    $("#EmployeeId").val(response.id)

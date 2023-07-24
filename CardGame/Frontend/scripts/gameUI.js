@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  let canPlay=1;
+  let canPlay = 1;
   function updateUI() {
     $("#draw-button").prop("disabled", true);
     $("#draw-button").removeClass("active-button").addClass("disabled-button");
@@ -19,35 +19,33 @@ $(document).ready(function () {
             .text(card)
             .click(() => {
               if (data.canPlay) {
-                
                 playCard(card, index);
-              }
-              else
-              {
-                canPlay=0;
+              } else {
+                canPlay = 0;
               }
             });
           playerHand.append(cardElement);
         });
-       
+
         $("#card-pile").text(data.cardPile);
         //console.log("Card pile color is "+data.cardPileColor);
         $("#card-pile").removeClass().addClass(data.cardPileColor);
         $("#player-name").text(data.playerName);
         if (!data.canPlay) {
-       //   alert("You cannot play you have to draw a card!");
-       $("#draw-button").prop("disabled", false);
-       $("#draw-button").removeClass("disabled-button").addClass("active-button");
-       }
+          //   alert("You cannot play you have to draw a card!");
+          $("#draw-button").prop("disabled", false);
+          $("#draw-button")
+            .removeClass("disabled-button")
+            .addClass("active-button");
+        }
       },
       error: function () {
         console.log("Error occurred while updating player cards.");
-      }
+      },
     });
-
   }
   //asking the user weather he want to exit or not
-  window.addEventListener('beforeunload', (event) => {
+  window.addEventListener("beforeunload", (event) => {
     event.returnValue = `Game Progress will be loss`;
   });
   $("#draw-button").click(function () {
@@ -59,24 +57,20 @@ $(document).ready(function () {
       type: "GET",
       dataType: "json",
       success: function (data) {
-       alert(data);
-    
+        alert(data);
       },
       error: function (error) {
         console.log(error);
-      }
-  
+      },
     });
-     updateUI();
-  
-
+    updateUI();
   });
   function playCard(card, index) {
     var Wild;
     console.log(card);
     if (card == "Wild" || card == "DrawFourWild") {
       Wild = true;
-      var colorDropdown = document.createElement("select")
+      var colorDropdown = document.createElement("select");
       var colors = ["Red", "Blue", "Green", "Yellow"];
       for (var i = 0; i < colors.length; i++) {
         var option = document.createElement("option");
@@ -85,68 +79,63 @@ $(document).ready(function () {
         option.text = colors[i];
         colorDropdown.appendChild(option);
       }
-      var container = document.getElementById("color-dropdown-container")
+      var container = document.getElementById("color-dropdown-container");
       $("#color-dropdown-container").show();
       container.innerHTML = "";
       container.appendChild(colorDropdown);
     }
     if (Wild === true) {
-      Wild=false;
+      Wild = false;
       colorDropdown.addEventListener("change", function () {
         selectedColor = this.value;
         console.log("Selected color:", selectedColor);
         console.log("Played card:", card, index);
         $.ajax({
-          url: '/Backend/Controller/Game/PlayCard.php',
+          url: "/Backend/Controller/Game/PlayCard.php",
           type: "POST",
-          data: { "index": index, "color": selectedColor },
+          data: { index: index, color: selectedColor },
           success: function (data) {
             if (data) {
               alert(data);
               if (data.includes("Congratulations")) {
                 console.log("Congratulations message found in the response.");
                 alert(data);
-                window.location.href="./views/Game/gameForm.html";
-            } else {    
-              $("#color-dropdown-container").prop("disabled", true).val(data.color);
-              updateUI();
-            
-            }
-            
+                window.location.href = "./views/Game/gameForm.html";
+              } else {
+                $("#color-dropdown-container")
+                  .prop("disabled", true)
+                  .val(data.color);
+                updateUI();
+              }
             }
           },
           error: function () {
             console.log("Unexpected error");
-          }
-        })
-      })
-    }
-    else {
+          },
+        });
+      });
+    } else {
       $.ajax({
-        url: '/Backend/Controller/Game/PlayCard.php',
+        url: "/Backend/Controller/Game/PlayCard.php",
         type: "POST",
-        data: { "index": index },
+        data: { index: index },
         success: function (data) {
-          if (data) { 
+          if (data) {
             alert(data);
             if (data.includes("Congratulations,")) {
               console.log("Congratulations message found in the response.");
               alert(data);
-              window.location.href="/frontend/views/Game/gameForm.html";
-
-           } else {
-            
+              window.location.href = "/frontend/views/Game/gameForm.html";
+            } else {
               updateUI();
-           
-          }      
+            }
           }
         },
         error: function () {
           console.log("Unexpected error");
-        }
+        },
       });
     }
   }
   updateUI();
-
 });

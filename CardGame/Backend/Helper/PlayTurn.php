@@ -2,6 +2,7 @@
 require_once('Deck.php');
 require_once('Player.php');
 require_once('Game.php');
+
 class PlayTurn
 {
     private $turn;
@@ -27,7 +28,7 @@ class PlayTurn
         }
         $this->playCard();
         if ($this->isWinner()) {
-            echo json_encode("Congratulations, " . $this->playerName . " has won the game!");
+            echo json_encode('Congratulations, ' . $this->playerName . ' has won the game!');
             return;
         }
         if ($this->isActionCardPlayed()) {
@@ -37,13 +38,10 @@ class PlayTurn
         }
         $this->turn = $this->updateTurn();
     }
-
-    // Getter methods
     public function getTurn()
     {
         return $this->turn;
     }
-
     function isCardValid()
     {
         if (!$this->game->validCard($this->turn, $this->cardIndex)) {
@@ -51,7 +49,6 @@ class PlayTurn
         }
         return 1;
     }
-
     function playCard()
     {
         $this->game->setCurrentColor(null);
@@ -59,48 +56,42 @@ class PlayTurn
         $this->game->setCardPile($this->card);
         echo json_encode($this->card);
     }
-
     function isWinner()
     {
         if ($this->game->getNoOfCards($this->turn) == 0) {
-            echo json_encode("Congratulations, " .  $this->playerName . " has won the game!");
+            echo json_encode('Congratulations, ' .  $this->playerName . ' has won the game!');
             return true;
         }
     }
-
     function wildCard()
     {
         if ($this->color == null) {
             return 0;
         }
         $this->game->setCurrentColor($this->color);
-        echo json_encode("Now the current color is: " . $this->game->getCurrentColor());
+        echo json_encode('Now the current color is: ' . $this->game->getCurrentColor());
         return 1;
     }
-
     function reverseCard()
     {
         $this->game->setDirection(($this->game->getDirection()) * -1);
-        echo json_encode("Reverse card is played.");
+        echo json_encode('Reverse card is played.');
         return 1;
     }
-
     function skipCard()
     {
         $this->turn = $this->updateTurn();
         echo json_encode($this->game->getPlayerName($this->turn) . "'s turn is skipped.");
         return 1;
     }
-
     function drawTwo()
     {
         $drawnCards = $this->game->drawFromDeck(2);
         $drawTwoPlayer = $this->updateTurn();
         $this->game->getPlayer($drawTwoPlayer)->addCards($drawnCards);
-        echo json_encode("Draw Two card is played. Cards are added in " . $this->game->getPlayerName($drawTwoPlayer));
+        echo json_encode('Draw Two card is played. Cards are added in ' . $this->game->getPlayerName($drawTwoPlayer));
         return 1;
     }
-
     function drawFour()
     {
         if ($this->color == null) {
@@ -110,10 +101,9 @@ class PlayTurn
         $drawFourPlayer = $this->updateTurn();
         $this->game->addCardInPlayerHand($drawFourPlayer, $drawnCards);
         $this->game->setCurrentColor($this->color);
-        echo json_encode("Draw Four card is played. Cards are added in " . $this->game->getPlayerName($drawFourPlayer));
+        echo json_encode('Draw Four card is played. Cards are added in ' . $this->game->getPlayerName($drawFourPlayer));
         return 1;
     }
-
     function updateTurn()
     {
         $turn = $this->turn + $this->game->getDirection();
@@ -126,18 +116,16 @@ class PlayTurn
         }
         return $turn;
     }
-
     function isActionCardPlayed()
     {
-        if ($this->game->deck->typeOfCard($this->card) === "number") {
+        if ($this->game->deck->typeOfCard($this->card) === 'number') {
             return 0;
         }
         return 1;
     }
-
     function takeAction()
     {
-        if ($this->game->typeOfAction($this->card) == "Wild") {
+        if ($this->game->typeOfAction($this->card) == 'Wild') {
             $result = $this->wildCard();
         } elseif ($this->game->typeOfAction($this->card) == 'Reverse') {
             $result = $this->reverseCard();

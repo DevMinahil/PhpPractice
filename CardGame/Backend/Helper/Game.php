@@ -1,26 +1,24 @@
 <?php
-
 require_once('Deck.php');
 require_once('Player.php');
-
 class Game
 {
     private int $numOfPlayers;
     private static ?Game $instance = null;
     private $players;
-
     private $direction;
     public Deck $deck;
     private array $cardPile = [];
     private $currentColor;
-
     private function __construct($direction, $numOfPlayers, $name)
     {
-
         $this->numOfPlayers = $numOfPlayers;
+
         $this->direction = $direction;
+
         $this->deck = new Deck();
-        $this->players=array();
+
+        $this->players = array();
 
         for ($i = 0; $i < $this->numOfPlayers; $i++) {
             $this->players[] = new Player($name[$i]);
@@ -31,7 +29,6 @@ class Game
         //generating cards for action file
         $card = $this->deck->drawCards(1);
         $card = implode($card);
-
         while ($this->deck->typeOfCard($card) === 'action') {
             $this->deck->insertCard($card);
             $card = $this->deck->drawCards(1);
@@ -46,15 +43,15 @@ class Game
             self::$instance = new Game($direction, $numOfPlayers, $name);
         }
         return self::$instance;
-    }  public function getNumOfPlayers(): int
+    }
+    public function getNumOfPlayers(): int
     {
         return $this->numOfPlayers;
     }
-    public function addCardInPlayerHand($id,$cards)
+    public function addCardInPlayerHand($id, $cards)
     {
         $this->players[$id]->addCards($cards);
     }
-
     public function getDeck()
     {
         return $this->deck;
@@ -67,7 +64,6 @@ class Game
     {
         $this->currentColor = $color;
     }
-
     public function getPlayer($id)
     {
         return $this->players[$id];
@@ -76,24 +72,20 @@ class Game
     {
         return $this->direction;
     }
-
     public function setDirection($direction)
     {
         $this->direction = $direction;
     }
-
     public function distributeCards()
     {
         foreach ($this->players as $player) {
             $player->setCards($this->deck->drawCards(7));
         }
     }
-
     public function setCardPile($card)
     {
         array_push($this->cardPile, $card);
     }
-
     public function getCardPile()
     {
         return $this->cardPile[sizeof($this->cardPile) - 1];
@@ -105,7 +97,7 @@ class Game
     //verifies weather the user can play or not
     public function canPlay($id)
     {
-         $firstCard = $this->getCardPile();
+        $firstCard = $this->getCardPile();
 
         foreach ($this->players[$id]->getCards() as $card) {
             if ($this->deck->typeOfCard($card) == 'number') {
@@ -125,14 +117,14 @@ class Game
             if ($this->currentColor == $this->deck->cardColor($card)) {
                 return true;
             }
-            if($this->deck->typeOfAction($card)==$this->deck->typeOfAction($firstCard)) {
+            if ($this->deck->typeOfAction($card) == $this->deck->typeOfAction($firstCard)) {
                 return true;
             }
         }
 
         return false;
     }
-     //checks if the user has played valid card
+    //checks if the user has played valid card
     public function validCard($id, $cardIndex)
     {
         $firstCard = $this->getCardPile();
@@ -144,11 +136,9 @@ class Game
                 return true;
             }
         }
-
         if (($this->deck->cardColor($card)) == 'Wild') {
             return true;
         }
-
         if ($this->deck->cardColor($card) == $this->deck->cardColor($firstCard)) {
             return true;
         }
@@ -156,25 +146,21 @@ class Game
 
             return true;
         }
-        if($this->typeOfAction($card)==$this->typeOfAction($firstCard)) {
+        if ($this->typeOfAction($card) == $this->typeOfAction($firstCard)) {
             return true;
-
         }
         return false;
     } //draws specific number of cards from card file
     public function drawFromDeck($number)
     {
-        if( $this->deck->drawCards($number)===0)
-        {
-                $cardsToAddBack = array_slice($this->cardPile, 0, -1); // Exclude the last card
-                // Adding the cards back to the deck
-                foreach ($cardsToAddBack as $card) {
-                    $this->deck->addCards($card);
-                }
-                return $this->deck->drawCards($number);
-
-        }
-        else return $this->deck->drawCards($number);
+        if ($this->deck->drawCards($number) === 0) {
+            $cardsToAddBack = array_slice($this->cardPile, 0, -1); // Exclude the last card
+            // Adding the cards back to the deck
+            foreach ($cardsToAddBack as $card) {
+                $this->deck->addCards($card);
+            }
+            return $this->deck->drawCards($number);
+        } else return $this->deck->drawCards($number);
     }
     //return card type of the card played by the user
     public function cardType($card)
@@ -186,12 +172,10 @@ class Game
     {
         return $this->deck->typeOfAction($card);
     }
-
     public function getNoOfCards($id)
     {
         return $this->players[$id]->noOfCardsLeft();
     }
-
     public function removePlayerCard($id, $card)
     {
         return $this->players[$id]->removeCard($card);

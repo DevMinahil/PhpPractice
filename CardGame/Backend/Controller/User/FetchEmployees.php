@@ -3,7 +3,6 @@ require_once 'UserFactory.php';
 $employees = [];
 $stmt = $user->viewAll();
 $result = $stmt->get_result();
-
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         if ($row["IsAdmin"] != 1) {
@@ -18,5 +17,4 @@ if (mysqli_num_rows($result) > 0) {
         }
     }
 }
-
 echo json_encode($employees);

@@ -49,7 +49,6 @@ $(document).ready(function() {
             nameInput.removeClass("is-invalid");
         }
     });
-
     $("#inputEmail").blur(function() {
         var emailInput = $(this);
         var emailError = $("#emailError");
@@ -61,8 +60,7 @@ $(document).ready(function() {
             emailError.hide();
             emailInput.removeClass("is-invalid");
         }
-    });
-
+    })
     $("#phone").blur(function() {
         var phoneInput = $(this);
         var phoneError = $("#phoneError");
@@ -98,7 +96,6 @@ $(document).ready(function() {
             confirmPasswordInput.removeClass("is-invalid");
         }
     });
-
     $("#signupForm").submit(function(event) {
         var nameInput = $("#inputName");
         var nameError = $("#nameError");
